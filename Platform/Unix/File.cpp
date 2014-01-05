@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008-2010 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008-2010 YourProduct Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the YourProduct License 3.0 the full text of which is contained in
+ the file License.txt included in YourProduct binary and source code distribution
  packages.
 */
 
@@ -31,7 +31,7 @@
 #include "Platform/File.h"
 #include "Platform/TextReader.h"
 
-namespace TrueCrypt
+namespace YourProduct
 {
 #if 0
 #	define TC_TRACE_FILE_OPERATIONS
@@ -39,7 +39,7 @@ namespace TrueCrypt
 	static void TraceFileOperation (int fileHandle, FilePath filePath, bool write, uint64 length, int64 position = -1)
 	{
 		string path = filePath;
-		if (path.empty() || path.find ("truecrypt_aux_mnt") != string::npos)
+		if (path.empty() || path.find ("yourproduct_aux_mnt") != string::npos)
 			return;
 
 		stringstream s;

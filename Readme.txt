@@ -1,4 +1,4 @@
-This archive contains the source code of TrueCrypt 7.1a.
+This archive contains the source code of YourProduct, based on TrueCrypt 7.1a.
 
 
 Important
@@ -8,8 +8,7 @@ You may use the source code contained in this archive only if you accept and
 agree to the license terms contained in the file 'License.txt', which is
 included in this archive.
 
-Note that the license specifies, for example, that a derived work must not be
-called 'TrueCrypt'.
+Note that the license specifies, for example, that this is a derived work must not be called 'TrueCrypt'.
 
 
 
@@ -17,12 +16,12 @@ Contents
 ========
 
 I. Windows
-	Requirements for Building TrueCrypt for Windows
-	Instructions for Building TrueCrypt for Windows
+	Requirements for Building YourProduct for Windows
+	Instructions for Building YourProduct for Windows
 
 II. Linux and Mac OS X
-	Requirements for Building TrueCrypt for Linux and Mac OS X
-	Instructions for Building TrueCrypt for Linux and Mac OS X
+	Requirements for Building YourProduct for Linux and Mac OS X
+	Instructions for Building YourProduct for Linux and Mac OS X
 	
 III. FreeBSD and OpenSolaris
 
@@ -37,7 +36,7 @@ VI. Further Information
 I. Windows
 ==========
 
-Requirements for Building TrueCrypt for Windows:
+Requirements for Building YourProduct for Windows:
 ------------------------------------------------
 
 - Microsoft Visual C++ 2008 SP1 (Professional Edition or compatible)
@@ -53,14 +52,14 @@ IMPORTANT:
 
 The 64-bit editions of Windows Vista and later versions of Windows, and in
 some cases (e.g. playback of HD DVD content) also the 32-bit editions, do not
-allow the TrueCrypt driver to run without an appropriate digital signature.
-Therefore, all .sys files in official TrueCrypt binary packages are digitally
-signed with the digital certificate of the TrueCrypt Foundation, which was
+allow the YourProduct driver to run without an appropriate digital signature.
+Therefore, all .sys files in official YourProduct binary packages are digitally
+signed with the digital certificate of the YourProduct Foundation, which was
 issued by a certification authority. At the end of each official .exe and
 .sys file, there are embedded digital signatures and all related certificates
 (i.e. all certificates in the relevant certification chain, such as the
 certification authority certificates, CA-MS cross-certificate, and the
-TrueCrypt Foundation certificate). Keep this in mind if you compile TrueCrypt
+YourProduct Foundation certificate). Keep this in mind if you compile YourProduct
 and compare your binaries with the official binaries. If your binaries are
 unsigned, the sizes of the official binaries will usually be approximately
 10 KB greater than sizes of your binaries (there may be further differences
@@ -69,7 +68,7 @@ or no service pack for Visual Studio, or different hotfixes for it, or if you
 use different versions of the required SDKs).
 
 
-Instructions for Building TrueCrypt for Windows:
+Instructions for Building YourProduct for Windows:
 ------------------------------------------------
 
 1) Create an environment variable 'MSVC16_ROOT' pointing to the folder 'MSVC15'
@@ -78,7 +77,7 @@ Instructions for Building TrueCrypt for Windows:
    Note: The 16-bit installer MSVC15\SETUP.EXE cannot be run on 64-bit Windows,
    but it is actually not necessary to run it. You only need to extract the
    folder 'MSVC15', which contains the 32-bit binaries required to build the
-   TrueCrypt Boot Loader.
+   YourProduct Boot Loader.
 
 2) If you have installed the Windows Driver Development Kit in another
    directory than '%SYSTEMDRIVE%\WinDDK', create an environment variable
@@ -88,13 +87,13 @@ Instructions for Building TrueCrypt for Windows:
    environment variable 'PKCS11_INC' pointing to the directory where
    the PKCS #11 header files are installed.
 
-4) Open the solution file 'TrueCrypt.sln' in Microsoft Visual Studio 2008.
+4) Open the solution file 'YourProduct.sln' in Microsoft Visual Studio 2008.
 
 5) Select 'All' as the active solution configuration.
 
 6) Build the solution.
 
-7) If successful, there should be newly built TrueCrypt binaries in the
+7) If successful, there should be newly built YourProduct binaries in the
    'Release' folder.
 
 
@@ -102,7 +101,7 @@ Instructions for Building TrueCrypt for Windows:
 II. Linux and Mac OS X
 ======================
 
-Requirements for Building TrueCrypt for Linux and Mac OS X:
+Requirements for Building YourProduct for Linux and Mac OS X:
 -----------------------------------------------------------
 
 - GNU Make
@@ -120,13 +119,13 @@ Requirements for Building TrueCrypt for Linux and Mac OS X:
   environment variable 'PKCS11_INC'.
 
 
-Instructions for Building TrueCrypt for Linux and Mac OS X:
+Instructions for Building YourProduct for Linux and Mac OS X:
 -----------------------------------------------------------
 
-1) Change the current directory to the root of the TrueCrypt source code.
+1) Change the current directory to the root of the YourProduct source code.
 
 2) If you have no wxWidgets shared library installed, run the following
-   command to configure the wxWidgets static library for TrueCrypt and to
+   command to configure the wxWidgets static library for YourProduct and to
    build it: 
 
    $ make WX_ROOT=/usr/src/wxWidgets wxbuild
@@ -135,7 +134,7 @@ Instructions for Building TrueCrypt for Linux and Mac OS X:
    wxWidgets library. Output files will be placed in the './wxrelease/'
    directory.
 
-3) To build TrueCrypt, run the following command:
+3) To build YourProduct, run the following command:
 
    $ make
 
@@ -143,7 +142,7 @@ Instructions for Building TrueCrypt for Linux and Mac OS X:
    
    $ make WXSTATIC=1
 
-4) If successful, the TrueCrypt executable should be located in the directory
+4) If successful, the YourProduct executable should be located in the directory
    'Main'.
 
 By default, a universal executable supporting both graphical and text user

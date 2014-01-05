@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008 YourProduct Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the YourProduct License 3.0 the full text of which is contained in
+ the file License.txt included in YourProduct binary and source code distribution
  packages.
 */
 
@@ -11,7 +11,7 @@
 #include "Main/GraphicUserInterface.h"
 #include "VolumePropertiesDialog.h"
 
-namespace TrueCrypt
+namespace YourProduct
 {
 	VolumePropertiesDialog::VolumePropertiesDialog (wxWindow* parent, const VolumeInfo &volumeInfo)
 		: VolumePropertiesDialogBase (parent)
@@ -69,7 +69,7 @@ namespace TrueCrypt
 		AppendToList ("BACKUP_HEADER", LangString[volumeInfo.MinRequiredProgramVersion >= 0x600 ? "UISTR_YES" : "UISTR_NO"]);
 
 #ifdef TC_LINUX
-		if (string (volumeInfo.VirtualDevice).find ("/dev/mapper/truecrypt") != 0)
+		if (string (volumeInfo.VirtualDevice).find ("/dev/mapper/yourproduct") != 0)
 		{
 #endif
 		AppendToList ("TOTAL_DATA_READ", Gui->SizeToString (volumeInfo.TotalDataRead));

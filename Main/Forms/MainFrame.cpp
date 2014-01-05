@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008-2010 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008-2010 YourProduct Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the YourProduct License 3.0 the full text of which is contained in
+ the file License.txt included in YourProduct binary and source code distribution
  packages.
 */
 
@@ -34,7 +34,7 @@
 #include "VolumeCreationWizard.h"
 #include "VolumePropertiesDialog.h"
 
-namespace TrueCrypt
+namespace YourProduct
 {
 	MainFrame::MainFrame (wxWindow* parent) : MainFrameBase (parent),
 		ListItemRightClickEventPending (false),
@@ -46,7 +46,7 @@ namespace TrueCrypt
 
 		SetName (Application::GetName());
 		SetTitle (Application::GetName());
-		SetIcon (Resources::GetTrueCryptIcon());
+		SetIcon (Resources::GetYourProductIcon());
 
 #if defined(TC_UNIX) && !defined(TC_MACOSX)
 		try
@@ -1420,7 +1420,7 @@ namespace TrueCrypt
 		else if (show && !mTaskBarIcon->IsIconInstalled())
 		{
 #ifndef TC_MACOSX
-			mTaskBarIcon->SetIcon (Resources::GetTrueCryptIcon(), L"TrueCrypt");
+			mTaskBarIcon->SetIcon (Resources::GetYourProductIcon(), L"YourProduct");
 #endif
 		}
 	}

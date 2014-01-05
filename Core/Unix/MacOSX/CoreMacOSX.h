@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008-2009 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008-2009 YourProduct Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the YourProduct License 3.0 the full text of which is contained in
+ the file License.txt included in YourProduct binary and source code distribution
  packages.
 */
 
@@ -12,7 +12,7 @@
 #include "System.h"
 #include "Core/Unix/FreeBSD/CoreFreeBSD.h"
 
-namespace TrueCrypt
+namespace YourProduct
 {
 	class CoreMacOSX : public CoreFreeBSD
 	{
@@ -22,7 +22,7 @@ namespace TrueCrypt
 
 		virtual void CheckFilesystem (shared_ptr <VolumeInfo> mountedVolume, bool repair = false) const; 
 		virtual shared_ptr <VolumeInfo> DismountVolume (shared_ptr <VolumeInfo> mountedVolume, bool ignoreOpenFiles = false, bool syncVolumeInfo = false);
-		virtual string GetDefaultMountPointPrefix () const { return "/Volumes/truecrypt"; }
+		virtual string GetDefaultMountPointPrefix () const { return "/Volumes/yourproduct"; }
 
 	protected:
 		virtual void MountAuxVolumeImage (const DirectoryPath &auxMountPoint, const MountOptions &options) const;

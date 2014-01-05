@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008-2010 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008-2010 YourProduct Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the YourProduct License 3.0 the full text of which is contained in
+ the file License.txt included in YourProduct binary and source code distribution
  packages.
 */
 
@@ -14,7 +14,7 @@
 #include "Core/CoreBase.h"
 #include "Core/Unix/MountedFilesystem.h"
 
-namespace TrueCrypt
+namespace YourProduct
 {
 	class CoreUnix : public CoreBase
 	{
@@ -51,7 +51,7 @@ namespace TrueCrypt
 		virtual void DismountNativeVolume (shared_ptr <VolumeInfo> mountedVolume) const { throw NotApplicable (SRC_POS); }
 		virtual bool FilesystemSupportsUnixPermissions (const DevicePath &devicePath) const;
 		virtual string GetDefaultMountPointPrefix () const;
-		virtual string GetFuseMountDirPrefix () const { return ".truecrypt_aux_mnt"; }
+		virtual string GetFuseMountDirPrefix () const { return ".yourproduct_aux_mnt"; }
 		virtual MountedFilesystemList GetMountedFilesystems (const DevicePath &devicePath = DevicePath(), const DirectoryPath &mountPoint = DirectoryPath()) const = 0;
 		virtual uid_t GetRealUserId () const;
 		virtual gid_t GetRealGroupId () const;

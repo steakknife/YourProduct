@@ -30,7 +30,7 @@
 
 /* 
  ---------------------------------------------------------------------------
- Portions Copyright (c) 2005 TrueCrypt Developers Association
+ Portions Copyright (c) 2005 YourProduct Developers Association
 
  Changes:
 

@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008 YourProduct Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the YourProduct License 3.0 the full text of which is contained in
+ the file License.txt included in YourProduct binary and source code distribution
  packages.
 */
 
@@ -13,7 +13,7 @@
 #include "UserInterface.h"
 #include "UserInterfaceType.h"
 
-namespace TrueCrypt
+namespace YourProduct
 {
 	class Application
 	{
@@ -24,7 +24,7 @@ namespace TrueCrypt
 		static DirectoryPath GetExecutableDirectory ();
 		static FilePath GetExecutablePath ();
 		static int GetExitCode () { return ExitCode; }
-		static wstring GetName () { return L"TrueCrypt"; }
+		static wstring GetName () { return L"YourProduct"; }
 		static UserInterface *GetUserInterface () { return mUserInterface; }
 		static UserInterfaceType::Enum GetUserInterfaceType () { return mUserInterfaceType; }
 		static void Initialize (UserInterfaceType::Enum type);

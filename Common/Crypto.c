@@ -4,9 +4,9 @@
  Copyright (c) 1998-2000 Paul Le Roux and which is governed by the 'License
  Agreement for Encryption for the Masses'. Modifications and additions to
  the original source code (contained in this file) and all other portions
- of this file are Copyright (c) 2003-2010 TrueCrypt Developers Association
- and are governed by the TrueCrypt License 3.0 the full text of which is
- contained in the file License.txt included in TrueCrypt binary and source
+ of this file are Copyright (c) 2003-2010 YourProduct Developers Association
+ and are governed by the YourProduct License 3.0 the full text of which is
+ contained in the file License.txt included in YourProduct binary and source
  code distribution packages. */
 
 #include "Tcdefs.h"
@@ -418,8 +418,8 @@ BOOL EAInitMode (PCRYPTO_INFO ci)
 
 		/* Note: XTS mode could potentially be initialized with a weak key causing all blocks in one data unit
 		on the volume to be tweaked with zero tweaks (i.e. 512 bytes of the volume would be encrypted in ECB
-		mode). However, to create a TrueCrypt volume with such a weak key, each human being on Earth would have
-		to create approximately 11,378,125,361,078,862 (about eleven quadrillion) TrueCrypt volumes (provided 
+		mode). However, to create a YourProduct volume with such a weak key, each human being on Earth would have
+		to create approximately 11,378,125,361,078,862 (about eleven quadrillion) YourProduct volumes (provided 
 		that the size of each of the volumes is 1024 terabytes). */
 		break;
 

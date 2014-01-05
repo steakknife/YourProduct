@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008 YourProduct Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the YourProduct License 3.0 the full text of which is contained in
+ the file License.txt included in YourProduct binary and source code distribution
  packages.
 */
 
@@ -13,7 +13,7 @@
 #include "Hash.h"
 #include "VolumePassword.h"
 
-namespace TrueCrypt
+namespace YourProduct
 {
 	class Pkcs5Kdf;
 	typedef list < shared_ptr <Pkcs5Kdf> > Pkcs5KdfList;
