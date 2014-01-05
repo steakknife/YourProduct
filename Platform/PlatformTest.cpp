@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008-2009 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008-2009 YourProduct Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the YourProduct License 3.0 the full text of which is contained in
+ the file License.txt included in YourProduct binary and source code distribution
  packages.
 */
 
@@ -20,7 +20,7 @@
 #include "Thread.h"
 #include "Common/Tcdefs.h"
 
-namespace TrueCrypt
+namespace YourProduct
 {
 	// make_shared_auto, File, Stream, MemoryStream, Endian, Serializer, Serializable
 	void PlatformTest::SerializerTest ()
@@ -33,7 +33,7 @@ namespace TrueCrypt
 
 		try
 		{
-			file->Open ("truecrypt-serializer-test.tmp", File::CreateReadWrite);
+			file->Open ("yourproduct-serializer-test.tmp", File::CreateReadWrite);
 			stream = shared_ptr <Stream> (new FileStream (file));
 		}
 		catch (...) { }

@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008-2009 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008-2009 YourProduct Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the YourProduct License 3.0 the full text of which is contained in
+ the file License.txt included in YourProduct binary and source code distribution
  packages.
 */
 
@@ -13,7 +13,7 @@
 #include "Main/Resources.h"
 #include "AboutDialog.h"
 
-namespace TrueCrypt
+namespace YourProduct
 {
 	AboutDialog::AboutDialog (wxWindow* parent) : AboutDialogBase (parent)
 	{
@@ -25,7 +25,7 @@ namespace TrueCrypt
 
 		VersionStaticText->SetLabel (Application::GetName() + L" " + StringConverter::ToWide (Version::String()));
 		CopyrightStaticText->SetLabel (StringConverter::ToWide (TC_STR_RELEASED_BY));
-		WebsiteHyperlink->SetLabel (L"www.truecrypt.org");
+		WebsiteHyperlink->SetLabel (L"www.yourproduct.org");
 
 		CreditsTextCtrl->SetMinSize (wxSize (
 			Gui->GetCharWidth (CreditsTextCtrl) * 70,
@@ -52,15 +52,15 @@ namespace TrueCrypt
 			L"Paulo Barreto, Brian Gladman, Wei Dai, Peter Gutmann, and many others.\n\n"
 
 			L"Portions of this software:\n"
-			L"Copyright \xA9 2003-2012 TrueCrypt Developers Association. All Rights Reserved.\n"
+			L"Copyright \xA9 2003-2012 YourProduct Developers Association. All Rights Reserved.\n"
 			L"Copyright \xA9 1998-2000 Paul Le Roux. All Rights Reserved.\n"
 			L"Copyright \xA9 1998-2008 Brian Gladman. All Rights Reserved.\n"
 
 			L"\nThis software as a whole:\n"
-			L"Copyright \xA9 2012 TrueCrypt Developers Association. All rights reserved.\n\n"
+			L"Copyright \xA9 2012 YourProduct Developers Association. All rights reserved.\n\n"
 
 			L"This software uses wxWidgets library, which is copyright \xA9 1998-2011 Julian Smart, Robert Roebling et al.\n\n"
 
-			L"A TrueCrypt Foundation Release");
+			L"A YourProduct Foundation Release");
 	}
 }

@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008 YourProduct Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the YourProduct License 3.0 the full text of which is contained in
+ the file License.txt included in YourProduct binary and source code distribution
  packages.
 */
 
@@ -15,7 +15,7 @@
 #include "Volume/VolumeInfo.h"
 #include "Volume/Volume.h"
 
-namespace TrueCrypt
+namespace YourProduct
 {
 
 	class FuseService
@@ -43,7 +43,7 @@ namespace TrueCrypt
 		static int ExceptionToErrorCode ();
 		static const char *GetControlPath () { return "/control"; }
 		static const char *GetVolumeImagePath ();
-		static string GetDeviceType () { return "truecrypt"; }
+		static string GetDeviceType () { return "yourproduct"; }
 		static uid_t GetGroupId () { return GroupId; }
 		static uid_t GetUserId () { return UserId; }
 		static shared_ptr <Buffer> GetVolumeInfo ();

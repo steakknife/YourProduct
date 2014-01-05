@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008-2010 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008-2010 YourProduct Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the YourProduct License 3.0 the full text of which is contained in
+ the file License.txt included in YourProduct binary and source code distribution
  packages.
 */
 
@@ -18,7 +18,7 @@
 #include "Driver/Fuse/FuseService.h"
 #include "Volume/VolumePasswordCache.h"
 
-namespace TrueCrypt
+namespace YourProduct
 {
 	CoreUnix::CoreUnix ()
 	{
@@ -210,12 +210,12 @@ namespace TrueCrypt
 			return envPrefix;
 		
 		if (FilesystemPath ("/media").IsDirectory())
-			return "/media/truecrypt";
+			return "/media/yourproduct";
 		
 		if (FilesystemPath ("/mnt").IsDirectory())
-			return "/mnt/truecrypt";
+			return "/mnt/yourproduct";
 		
-		return GetTempDirectory() + "/truecrypt_mnt";
+		return GetTempDirectory() + "/yourproduct_mnt";
 	}
 
 	uint32 CoreUnix::GetDeviceSectorSize (const DevicePath &devicePath) const

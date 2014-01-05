@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008-2010 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008-2010 YourProduct Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the YourProduct License 3.0 the full text of which is contained in
+ the file License.txt included in YourProduct binary and source code distribution
  packages.
 */
 
@@ -22,7 +22,7 @@
 #include "Driver/Fuse/FuseService.h"
 #include "Core/Unix/CoreServiceProxy.h"
 
-namespace TrueCrypt
+namespace YourProduct
 {
 	CoreLinux::CoreLinux ()
 	{
@@ -114,7 +114,7 @@ namespace TrueCrypt
 	{
 		string devPath = mountedVolume->VirtualDevice;
 
-		if (devPath.find ("/dev/mapper/truecrypt") != 0)
+		if (devPath.find ("/dev/mapper/yourproduct") != 0)
 			throw NotApplicable (SRC_POS);
 
 		size_t devCount = 0;
@@ -380,7 +380,7 @@ namespace TrueCrypt
 				}
 
 				stringstream nativeDevName;
-				nativeDevName << "truecrypt" << options.SlotNumber;
+				nativeDevName << "yourproduct" << options.SlotNumber;
 				
 				if (nativeDevCount != cipherCount - 1)
 					nativeDevName << "_" << cipherCount - nativeDevCount - 2;

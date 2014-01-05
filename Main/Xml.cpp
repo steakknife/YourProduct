@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008 YourProduct Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the YourProduct License 3.0 the full text of which is contained in
+ the file License.txt included in YourProduct binary and source code distribution
  packages.
 */
 
@@ -11,7 +11,7 @@
 #include "Platform/FileStream.h"
 #include "Xml.h"
 
-namespace TrueCrypt
+namespace YourProduct
 {
 	XmlParser::XmlParser (const FilePath &fileName)
 	{
@@ -93,7 +93,7 @@ namespace TrueCrypt
 		TextOutStream.reset (new wxTextOutputStream (*MemOutStream));
 		OutFile.Open (fileName, File::CreateWrite);
 
-		*TextOutStream << L"<?xml version=\"1.0\" encoding=\"utf-8\"?>" << endl << L"<TrueCrypt>" << endl;
+		*TextOutStream << L"<?xml version=\"1.0\" encoding=\"utf-8\"?>" << endl << L"<YourProduct>" << endl;
 		CurrentIndentLevel = 0;
 	}
 
@@ -101,7 +101,7 @@ namespace TrueCrypt
 	{
 		if (MemOutStream.get())
 		{
-			*TextOutStream << L"</TrueCrypt>" << endl;
+			*TextOutStream << L"</YourProduct>" << endl;
 
 			wxStreamBuffer *buf = MemOutStream->GetOutputStreamBuffer();
 			OutFile.Write (ConstBufferPtr (reinterpret_cast <byte *> (buf->GetBufferStart()), buf->GetBufferSize()));

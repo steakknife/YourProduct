@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008-2009 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008-2009 YourProduct Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the YourProduct License 3.0 the full text of which is contained in
+ the file License.txt included in YourProduct binary and source code distribution
  packages.
 */
 
@@ -31,7 +31,7 @@
 #include "Forms/RandomPoolEnrichmentDialog.h"
 #include "Forms/SecurityTokenKeyfilesDialog.h"
 
-namespace TrueCrypt
+namespace YourProduct
 {
 	GraphicUserInterface::GraphicUserInterface () :
 		ActiveFrame (nullptr),
@@ -860,7 +860,7 @@ namespace TrueCrypt
 
 				wxLog::FlushActive();
 				Application::SetExitCode (1);
-				Gui->ShowInfo (_("TrueCrypt is already running."));
+				Gui->ShowInfo (_("YourProduct is already running."));
 				return false;
 			}
 
@@ -1079,13 +1079,13 @@ namespace TrueCrypt
 			wxString docPath = wstring (Application::GetExecutableDirectory());
 
 #ifdef TC_RESOURCE_DIR
-			docPath = StringConverter::ToWide (string (TC_TO_STRING (TC_RESOURCE_DIR)) + "/doc/TrueCrypt User Guide.pdf");
+			docPath = StringConverter::ToWide (string (TC_TO_STRING (TC_RESOURCE_DIR)) + "/doc/YourProduct User Guide.pdf");
 #elif defined (TC_WINDOWS)
-			docPath += L"\\TrueCrypt User Guide.pdf";
+			docPath += L"\\YourProduct User Guide.pdf";
 #elif defined (TC_MACOSX)
-			docPath += L"/../Resources/TrueCrypt User Guide.pdf";
+			docPath += L"/../Resources/YourProduct User Guide.pdf";
 #elif defined (TC_UNIX)
-			docPath = L"/usr/share/truecrypt/doc/TrueCrypt User Guide.pdf";
+			docPath = L"/usr/share/yourproduct/doc/YourProduct User Guide.pdf";
 #else
 #	error TC_RESOURCE_DIR undefined
 #endif

@@ -4,9 +4,9 @@
  Copyright (c) 1998-2000 Paul Le Roux and which is governed by the 'License
  Agreement for Encryption for the Masses'. Modifications and additions to
  the original source code (contained in this file) and all other portions
- of this file are Copyright (c) 2003-2010 TrueCrypt Developers Association
- and are governed by the TrueCrypt License 3.0 the full text of which is
- contained in the file License.txt included in TrueCrypt binary and source
+ of this file are Copyright (c) 2003-2010 YourProduct Developers Association
+ and are governed by the YourProduct License 3.0 the full text of which is
+ contained in the file License.txt included in YourProduct binary and source
  code distribution packages. */
 
 #ifndef TC_HEADER_DLGCODE
@@ -44,12 +44,12 @@ enum
 	TC_TBXID_EXTRA_BOOT_PARTITION_REMOVAL_INSTRUCTIONS
 };
 
-#define TC_APPLICATION_ID	L"TrueCryptFoundation.TrueCrypt"
+#define TC_APPLICATION_ID	L"YourProductFoundation.YourProduct"
 
-#define TC_MUTEX_NAME_SYSENC				"Global\\TrueCrypt System Encryption Wizard"
-#define TC_MUTEX_NAME_NONSYS_INPLACE_ENC	"Global\\TrueCrypt In-Place Encryption Wizard"
-#define TC_MUTEX_NAME_APP_SETUP				"Global\\TrueCrypt Setup"
-#define TC_MUTEX_NAME_DRIVER_SETUP			"Global\\TrueCrypt Driver Setup"
+#define TC_MUTEX_NAME_SYSENC				"Global\\YourProduct System Encryption Wizard"
+#define TC_MUTEX_NAME_NONSYS_INPLACE_ENC	"Global\\YourProduct In-Place Encryption Wizard"
+#define TC_MUTEX_NAME_APP_SETUP				"Global\\YourProduct Setup"
+#define TC_MUTEX_NAME_DRIVER_SETUP			"Global\\YourProduct Driver Setup"
 
 #define IDC_ABOUT 0x7fff	/* ID for AboutBox on system menu in wm_user range */
 
@@ -146,8 +146,8 @@ extern BOOL MultipleMountOperationInProgress;
 enum tc_app_msg_ids
 {
 	/* WARNING: Changing these values or their meanings may cause incompatibility with other versions
-	(for example, if a new version of the TrueCrypt installer needed to shut down this version of
-	TrueCrypt during upgrade, it could fail or do something unwanted because the signal value would
+	(for example, if a new version of the YourProduct installer needed to shut down this version of
+	YourProduct during upgrade, it could fail or do something unwanted because the signal value would
 	be incorrect). When adding a new constant, verify that the value is unique within this block and
 	that it is less than WM_APP+16383. */
 
@@ -278,7 +278,7 @@ void CloseDriverSetupMutex (void);
 BOOL CreateAppSetupMutex (void);
 BOOL InstanceHasAppSetupMutex (void);
 void CloseAppSetupMutex (void);
-BOOL IsTrueCryptInstallerRunning (void);
+BOOL IsYourProductInstallerRunning (void);
 uint32 ReadDriverConfigurationFlags ();
 uint32 ReadEncryptionThreadPoolFreeCpuCountLimit ();
 BOOL LoadSysEncSettings (HWND hwndDlg);
