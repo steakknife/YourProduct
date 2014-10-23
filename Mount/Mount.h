@@ -4,9 +4,9 @@
  Copyright (c) 1998-2000 Paul Le Roux and which is governed by the 'License
  Agreement for Encryption for the Masses'. Modifications and additions to
  the original source code (contained in this file) and all other portions
- of this file are Copyright (c) 2003-2010 YourProduct Developers Association
- and are governed by the YourProduct License 3.0 the full text of which is
- contained in the file License.txt included in YourProduct binary and source
+ of this file are Copyright (c) 2003-2010 TrueCrypt Developers Association
+ and are governed by the TrueCrypt License 3.0 the full text of which is
+ contained in the file License.txt included in TrueCrypt binary and source
  code distribution packages. */
 
 #ifdef __cplusplus
@@ -89,10 +89,9 @@ static BOOL CheckMountList ();
 int GetCipherBlockSizeByDriveNo (int nDosDriveNo);
 int GetModeOfOperationByDriveNo (int nDosDriveNo);
 void ChangeMainWindowVisibility ();
-void LaunchVolCreationWizard (HWND hwndDlg);
 BOOL WholeSysDriveEncryption (BOOL bSilent);
 BOOL CheckSysEncMountWithoutPBA (const char *devicePath, BOOL quiet);
-BOOL TCBootLoaderOnInactiveSysEncDrive (void);
+BOOL TCBootLoaderOnInactiveSysEncDrive (char *szDevicePath);
 void CreateRescueDisk (void);
 int BackupVolumeHeader (HWND hwndDlg, BOOL bRequireConfirmation, char *lpszVolume);
 int RestoreVolumeHeader (HWND hwndDlg, char *lpszVolume);
@@ -101,7 +100,6 @@ static BOOL CALLBACK PerformanceSettingsDlgProc (HWND hwndDlg, UINT msg, WPARAM 
 static BOOL CALLBACK BootLoaderPreferencesDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 void MountSelectedVolume (HWND hwndDlg, BOOL mountWithOptions);
 uint32 ReadDriverConfigurationFlags ();
-void AnalyzeKernelMiniDump (HWND hwndDlg);
 void HookMouseWheel (HWND hwndDlg, UINT ctrlId);
 static BOOL HandleDriveListMouseWheelEvent (UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL bListMustBePointed);
 
@@ -109,7 +107,7 @@ static BOOL HandleDriveListMouseWheelEvent (UINT uMsg, WPARAM wParam, LPARAM lPa
 }
 
 void SetDriverConfigurationFlag (uint32 flag, BOOL state);
-BOOL MountFavoriteVolumes (BOOL systemFavorites = FALSE, BOOL logOnMount = FALSE, BOOL hotKeyMount = FALSE, const YourProduct::FavoriteVolume &favoriteVolumeToMount = YourProduct::FavoriteVolume());
+BOOL MountFavoriteVolumes (BOOL systemFavorites = FALSE, BOOL logOnMount = FALSE, BOOL hotKeyMount = FALSE, const TrueCrypt::FavoriteVolume &favoriteVolumeToMount = TrueCrypt::FavoriteVolume());
 BOOL GetExecutableImageInformation (const string &path, string &version, string &description, string &companyName, string &productName);
 
 #endif

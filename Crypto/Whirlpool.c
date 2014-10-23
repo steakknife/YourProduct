@@ -17,7 +17,7 @@
  * 
  * @author  Paulo S.L.M. Barreto
  * @author  Vincent Rijmen.
- * Adapted for YourProduct.
+ * Adapted for TrueCrypt.
  *
  * @version 3.0 (2003.03.12)
  *

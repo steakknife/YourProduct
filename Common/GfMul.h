@@ -25,7 +25,7 @@
  Issue Date: 31/01/2004
 */
 
-/* Adapted for YourProduct */
+/* Adapted for TrueCrypt */
 
 #ifndef _GCM_H
 #define _GCM_H

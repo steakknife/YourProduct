@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2005-2009 YourProduct Developers Association. All rights reserved.
+ Copyright (c) 2005-2009 TrueCrypt Developers Association. All rights reserved.
 
- Governed by the YourProduct License 3.0 the full text of which is contained in
- the file License.txt included in YourProduct binary and source code distribution
+ Governed by the TrueCrypt License 3.0 the full text of which is contained in
+ the file License.txt included in TrueCrypt binary and source code distribution
  packages.
 */
 
@@ -140,15 +140,15 @@ BOOL LoadLanguageFile ()
 		if (!xml)
 			continue;
 
-		// Required YourProduct version
+		// Required TrueCrypt version
 		XmlGetAttributeText (xml, "prog-version", attr, sizeof (attr));
 
 		// Check version of external language file
-		if (defaultLangParsed && strcmp (attr, VERSION_STRING) && strcmp (attr, "DEBUG"))
+		if (defaultLangParsed && strcmp (attr, VERSION_STRING) && strcmp (attr, "DEBUG") && strcmp (attr, "7.1a"))
 		{
 			wchar_t m[2048];
-			swprintf (m, L"The installed language pack is incompatible with this version of YourProduct (the language pack is for YourProduct %hs). A newer version may be available at www.yourproduct.org.\n\nTo prevent this message from being displayed, do any of the following:\n\n- Select 'Settings' > 'Language'; then select 'English' and click 'OK'.\n\n- Remove or replace the language pack with a compatible version (the language pack may reside e.g. in 'C:\\Program Files\\YourProduct' or '%%LOCALAPPDATA%%\\VirtualStore\\Program Files\\YourProduct', etc.)", attr);
-			MessageBoxW (NULL, m, L"YourProduct", MB_ICONERROR);
+			swprintf (m, L"The installed language pack is incompatible with this version of TrueCrypt (the language pack is for TrueCrypt %hs).\n\nTo prevent this message from being displayed, do any of the following:\n\n- Select 'Settings' > 'Language'; then select 'English' and click 'OK'.\n\n- Remove or replace the language pack with a compatible version (the language pack may reside e.g. in 'C:\\Program Files\\TrueCrypt' or '%%LOCALAPPDATA%%\\VirtualStore\\Program Files\\TrueCrypt', etc.)", attr);
+			MessageBoxW (NULL, m, L"TrueCrypt", MB_ICONERROR);
 			continue;
 		}
 
@@ -233,7 +233,7 @@ BOOL LoadLanguageFile ()
 									case 't': *out++ = '\t'; break;
 									case 'n': *out++ = 13; *out++ = 10; break;
 									default:
-										MessageBox (0, key, "YourProduct: Unknown '\\' escape sequence in string", MB_ICONERROR);
+										MessageBox (0, key, "TrueCrypt: Unknown '\\' escape sequence in string", MB_ICONERROR);
 										return FALSE;
 									}
 								}
@@ -247,7 +247,7 @@ BOOL LoadLanguageFile ()
 						len = MultiByteToWideChar (CP_UTF8, 0, attr, -1, wattr, sizeof (wattr) / sizeof(wattr[0]));
 						if (len == 0 || len == ERROR_NO_UNICODE_TRANSLATION)
 						{
-							MessageBox (0, key, "YourProduct: Error while decoding UTF-8 string", MB_ICONERROR);
+							MessageBox (0, key, "TrueCrypt: Error while decoding UTF-8 string", MB_ICONERROR);
 							return FALSE;
 						}
 
@@ -331,7 +331,6 @@ BOOL CALLBACK LanguageDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
 			BOOL defaultLangFound = FALSE;
 
 			LocalizeDialog (hwndDlg, "IDD_LANGUAGE");
-			ToHyperlink (hwndDlg, IDC_GET_LANG_PACKS);
 
 			for (xml = MapFirstLanguageFile (); xml != NULL; xml = MapNextLanguageFile ())
 			{
@@ -459,21 +458,6 @@ BOOL CALLBACK LanguageDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
 			EndDialog (hwndDlg, lw);
 			return 1;
 		}
-
-		if (lw == IDC_GET_LANG_PACKS)
-		{
-			char tmpstr [256];
-
-			if (strlen (ActiveLangPackVersion) > 0 && strlen (GetPreferredLangId()) > 0)
-				sprintf (tmpstr, "&langpackversion=%s&lang=%s", ActiveLangPackVersion, GetPreferredLangId());
-			else
-				tmpstr[0] = 0;
-
-			Applink ("localizations", TRUE, tmpstr);
-
-			return 1;
-		}
-		return 0;
 	}
 
 	return 0;

@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008-2009 YourProduct Developers Association. All rights reserved.
+ Copyright (c) 2008-2009 TrueCrypt Developers Association. All rights reserved.
 
- Governed by the YourProduct License 3.0 the full text of which is contained in
- the file License.txt included in YourProduct binary and source code distribution
+ Governed by the TrueCrypt License 3.0 the full text of which is contained in
+ the file License.txt included in TrueCrypt binary and source code distribution
  packages.
 */
 
@@ -49,7 +49,7 @@
 #define TC_SECURITY_TOKEN_KEYFILE_URL_SLOT L"slot"
 #define TC_SECURITY_TOKEN_KEYFILE_URL_FILE L"file"
 
-namespace YourProduct
+namespace TrueCrypt
 {
 	struct SecurityTokenInfo
 	{

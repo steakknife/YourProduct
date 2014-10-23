@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2007-2010 YourProduct Developers Association. All rights reserved.
+ Copyright (c) 2007-2010 TrueCrypt Developers Association. All rights reserved.
 
- Governed by the YourProduct License 3.0 the full text of which is contained in
- the file License.txt included in YourProduct binary and source code distribution
+ Governed by the TrueCrypt License 3.0 the full text of which is contained in
+ the file License.txt included in TrueCrypt binary and source code distribution
  packages.
 */
 
@@ -15,7 +15,7 @@
 #include "Dlgcode.h"
 #include "Registry.h"
 
-using namespace YourProduct;
+using namespace TrueCrypt;
 
 HRESULT CreateElevatedComObject (HWND hwnd, REFGUID guid, REFIID iid, void **ppv)
 {

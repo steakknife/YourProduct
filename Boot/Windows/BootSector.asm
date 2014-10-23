@@ -1,8 +1,8 @@
 ;
-; Copyright (c) 2008-2009 YourProduct Developers Association. All rights reserved.
+; Copyright (c) 2008-2009 TrueCrypt Developers Association. All rights reserved.
 ;
-; Governed by the YourProduct License 3.0 the full text of which is contained in
-; the file License.txt included in YourProduct binary and source code distribution
+; Governed by the TrueCrypt License 3.0 the full text of which is contained in
+; the file License.txt included in TrueCrypt binary and source code distribution
 ; packages.
 ;
 
@@ -21,7 +21,7 @@ start:
 	dw main, 0
 
 loader_name_msg:
-	db ' YourProduct Boot Loader', 13, 10, 0
+	db ' TrueCrypt Boot Loader', 13, 10, 0
 	
 main:
 	cli	

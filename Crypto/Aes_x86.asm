@@ -28,7 +28,7 @@
 ; aeskey.c and aestab.c for support.
 
 ;
-; Adapted for YourProduct:
+; Adapted for TrueCrypt:
 ; - Compatibility with NASM and GCC
 ;
 

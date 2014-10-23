@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2010 YourProduct Developers Association. All rights reserved.
+ Copyright (c) 2010 TrueCrypt Developers Association. All rights reserved.
 
- Governed by the YourProduct License 3.0 the full text of which is contained in
- the file License.txt included in YourProduct binary and source code distribution
+ Governed by the TrueCrypt License 3.0 the full text of which is contained in
+ the file License.txt included in TrueCrypt binary and source code distribution
  packages.
 */
 
@@ -19,7 +19,7 @@
 
 using namespace std;
 
-namespace YourProduct
+namespace TrueCrypt
 {
 	vector <FavoriteVolume> FavoriteVolumes;
 	vector <FavoriteVolume> SystemFavoriteVolumes;
@@ -207,11 +207,6 @@ namespace YourProduct
 						ListView_SetItemState (FavoriteListControl, Favorites.size() - 1, LVIS_SELECTED, LVIS_SELECTED);
 						ListView_EnsureVisible (FavoriteListControl, Favorites.size() - 1, FALSE);
 					}
-
-					if (SystemFavoritesMode)
-						SetDlgItemTextW (hwndDlg, IDC_FAVORITES_HELP_LINK, GetString ("SYS_FAVORITES_HELP_LINK"));
-
-					ToHyperlink (hwndDlg, IDC_FAVORITES_HELP_LINK);
 				}
 				catch (Exception &e)
 				{
@@ -362,10 +357,6 @@ namespace YourProduct
 					else
 						Warning ("SETTING_REQUIRES_REBOOT");
 				}
-				return 1;
-
-			case IDC_FAVORITES_HELP_LINK:
-				Applink (SystemFavoritesMode ? "sysfavorites" : "favorites", TRUE, "");
 				return 1;
 			}
 

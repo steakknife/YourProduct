@@ -29,7 +29,7 @@
  Issue Date: 14th January 1999
 */
 
-/* Adapted for YourProduct */
+/* Adapted for TrueCrypt */
 
 
 #ifdef TC_WINDOWS_BOOT

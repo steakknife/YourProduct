@@ -4,9 +4,9 @@
  Copyright (c) 1998-2000 Paul Le Roux and which is governed by the 'License
  Agreement for Encryption for the Masses'. Modifications and additions to
  the original source code (contained in this file) and all other portions
- of this file are Copyright (c) 2003-2012 YourProduct Developers Association
- and are governed by the YourProduct License 3.0 the full text of which is
- contained in the file License.txt included in YourProduct binary and source
+ of this file are Copyright (c) 2003-2012 TrueCrypt Developers Association
+ and are governed by the TrueCrypt License 3.0 the full text of which is
+ contained in the file License.txt included in TrueCrypt binary and source
  code distribution packages. */
 
 #include "Tcdefs.h"
@@ -51,6 +51,7 @@
 
 #ifdef TCMOUNT
 #include "Mount/Mount.h"
+#include "Mount/resource.h"
 #endif
 
 #ifdef VOLFORMAT
@@ -61,13 +62,11 @@
 #include "Setup/Setup.h"
 #endif
 
-using namespace YourProduct;
+using namespace TrueCrypt;
 
 LONG DriverVersion;
 
 char *LastDialogId;
-char szHelpFile[TC_MAX_PATH];
-char szHelpFile2[TC_MAX_PATH];
 char SecurityTokenLibraryPath[TC_MAX_PATH];
 
 HFONT hFixedDigitFont = NULL;
@@ -139,8 +138,8 @@ volatile HANDLE hNonSysInplaceEncMutex = NULL;
 register the driver or from trying to launch it in portable mode at the same time. */
 volatile HANDLE hDriverSetupMutex = NULL;
 
-/* This mutex is used to prevent users from running the main YourProduct app or the wizard while an instance
-of the YourProduct installer is running (which is also useful for enforcing restart before the apps can be used). */
+/* This mutex is used to prevent users from running the main TrueCrypt app or the wizard while an instance
+of the TrueCrypt installer is running (which is also useful for enforcing restart before the apps can be used). */
 volatile HANDLE hAppSetupMutex = NULL;
 
 HINSTANCE hInst = NULL;
@@ -375,7 +374,7 @@ void CreateFullVolumePath (char *lpszDiskFile, const char *lpszFileName, BOOL * 
 int FakeDosNameForDevice (const char *lpszDiskFile, char *lpszDosDevice, char *lpszCFDevice, BOOL bNameOnly)
 {
 	BOOL bDosLinkCreated = TRUE;
-	sprintf (lpszDosDevice, "yourproduct%lu", GetCurrentProcessId ());
+	sprintf (lpszDosDevice, "truecrypt%lu", GetCurrentProcessId ());
 
 	if (bNameOnly == FALSE)
 		bDosLinkCreated = DefineDosDevice (DDD_RAW_TARGET_PATH, lpszDosDevice, lpszDiskFile);
@@ -405,14 +404,14 @@ void AbortProcess (char *stringId)
 {
 	// Note that this function also causes localcleanup() to be called (see atexit())
 	MessageBeep (MB_ICONEXCLAMATION);
-	MessageBoxW (NULL, GetString (stringId), lpszTitle, ICON_HAND);
-	exit (1);
+	MessageBoxW (NULL, GetString (stringId), lpszTitle, ICON_HAND | MB_SETFOREGROUND | MB_TOPMOST);
+	ExitProcess (1);
 }
 
 void AbortProcessSilent (void)
 {
 	// Note that this function also causes localcleanup() to be called (see atexit())
-	exit (1);
+	ExitProcess (1);
 }
 
 
@@ -769,6 +768,19 @@ void AccommodateTextField (HWND hwndDlg, UINT ctrlId, BOOL bFirstUpdate, HFONT h
 }
 
 
+// Note that the user can still close the window by right-clicking its taskbar icon and selecting 'Close window', or by pressing Alt-F4, or using the Task Manager.
+void DisableCloseButton (HWND hwndDlg)
+{
+	EnableMenuItem (GetSystemMenu (hwndDlg, FALSE), SC_CLOSE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+}
+
+
+void EnableCloseButton (HWND hwndDlg)
+{
+	EnableMenuItem (GetSystemMenu (hwndDlg, FALSE), SC_CLOSE, MF_BYCOMMAND | MF_ENABLED);
+}
+
+
 // Protects an input field from having its content updated by a Paste action (call ToBootPwdField() to use this).
 static LRESULT CALLBACK BootPwdFieldProc (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -869,10 +881,6 @@ BOOL CALLBACK AboutDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam
 
 			LocalizeDialog (hwndDlg, "IDD_ABOUT_DLG");
 
-			// Hyperlink
-			SetWindowText (GetDlgItem (hwndDlg, IDC_HOMEPAGE), "www.yourproduct.org");
-			ToHyperlink (hwndDlg, IDC_HOMEPAGE);
-
 			// Logo area background (must not keep aspect ratio; must retain Windows-imposed distortion)
 			GetClientRect (GetDlgItem (hwndDlg, IDC_ABOUT_LOGO_AREA), &rec);
 			SetWindowPos (GetDlgItem (hwndDlg, IDC_ABOUT_BKG), HWND_TOP, 0, 0, rec.right, rec.bottom, SWP_NOMOVE);
@@ -890,7 +898,7 @@ BOOL CALLBACK AboutDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam
 
 			// Version
 			SendMessage (GetDlgItem (hwndDlg, IDT_ABOUT_VERSION), WM_SETFONT, (WPARAM) hUserBoldFont, 0);
-			sprintf (szTmp, "YourProduct %s", VERSION_STRING);
+			sprintf (szTmp, "TrueCrypt %s", VERSION_STRING);
 #if (defined(_DEBUG) || defined(DEBUG))
 			strcat (szTmp, "  (debug)");
 #endif
@@ -915,15 +923,15 @@ BOOL CALLBACK AboutDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam
 			"Paulo Barreto, Brian Gladman, Wei Dai, Peter Gutmann, and many others.\r\n\r\n"
 
 			"Portions of this software:\r\n"
-			"Copyright \xA9 2003-2012 YourProduct Developers Association. All Rights Reserved.\r\n"
+			"Copyright \xA9 2003-2014 TrueCrypt Developers Association. All Rights Reserved.\r\n"
 			"Copyright \xA9 1998-2000 Paul Le Roux. All Rights Reserved.\r\n"
 			"Copyright \xA9 1998-2008 Brian Gladman. All Rights Reserved.\r\n"
 			"Copyright \xA9 2002-2004 Mark Adler. All Rights Reserved.\r\n\r\n"
 
 			"This software as a whole:\r\n"
-			"Copyright \xA9 2012 YourProduct Developers Association. All rights reserved.\r\n\r\n"
+			"Copyright \xA9 2014 TrueCrypt Developers Association. All rights reserved.\r\n\r\n"
 
-			"A YourProduct Foundation Release");
+			"A TrueCrypt Foundation Release");
 
 		return 1;
 
@@ -931,12 +939,6 @@ BOOL CALLBACK AboutDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam
 		if (lw == IDOK || lw == IDCANCEL)
 		{
 			PostMessage (hwndDlg, WM_CLOSE, 0, 0);
-			return 1;
-		}
-
-		if (lw == IDC_HOMEPAGE)
-		{
-			Applink ("main", TRUE, "");
 			return 1;
 		}
 
@@ -1625,264 +1627,6 @@ LRESULT CALLBACK CustomDlgProc (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 }
 
 
-static BOOL IsReturnAddress (DWORD64 address)
-{
-	static size_t codeEnd = 0;
-	byte *sp = (byte *) address;
-
-	if (codeEnd == 0)
-	{
-		MEMORY_BASIC_INFORMATION mi;
-		if (VirtualQuery ((LPCVOID) 0x401000, &mi, sizeof (mi)) >= sizeof (mi))
-			codeEnd = (size_t) mi.BaseAddress + mi.RegionSize;
-	}
-
-	if (address < 0x401000 + 8 || address > codeEnd)
-		return FALSE;
-
-	return sp[-5] == 0xe8									// call ADDR
-		|| (sp[-6] == 0xff && sp[-5] == 0x15)				// call [ADDR]
-		|| (sp[-2] == 0xff && (sp[-1] & 0xf0) == 0xd0);		// call REG
-}
-
-
-typedef struct
-{
-	EXCEPTION_POINTERS *ExceptionPointers;
-	HANDLE ExceptionThread;
-
-} ExceptionHandlerThreadArgs;
-
-
-void ExceptionHandlerThread (void *threadArg)
-{
-	ExceptionHandlerThreadArgs *args = (ExceptionHandlerThreadArgs *) threadArg;
-
-	EXCEPTION_POINTERS *ep = args->ExceptionPointers;
-	DWORD addr;
-	DWORD exCode = ep->ExceptionRecord->ExceptionCode;
-	SYSTEM_INFO si;
-	wchar_t msg[8192];
-	char modPath[MAX_PATH];
-	int crc = 0;
-	char url[MAX_URL_LENGTH];
-	char lpack[128];
-	stringstream callStack;
-	addr = (DWORD) ep->ExceptionRecord->ExceptionAddress;
-	PDWORD sp = (PDWORD) ep->ContextRecord->Esp;
-	int frameNumber = 0;
-
-	switch (exCode)
-	{
-	case STATUS_IN_PAGE_ERROR:
-	case 0xeedfade:
-		// Exception not caused by YourProduct
-		MessageBoxW (0, GetString ("EXCEPTION_REPORT_EXT"),
-			GetString ("EXCEPTION_REPORT_TITLE"),
-			MB_ICONERROR | MB_OK | MB_SETFOREGROUND | MB_TOPMOST);
-		return;
-	}
-
-	// Call stack
-	HMODULE dbgDll = LoadLibrary ("dbghelp.dll");
-	if (dbgDll)
-	{
-		typedef DWORD (__stdcall *SymGetOptions_t) ();
-		typedef DWORD (__stdcall *SymSetOptions_t) (DWORD SymOptions);
-		typedef BOOL (__stdcall *SymInitialize_t) (HANDLE hProcess, PCSTR UserSearchPath, BOOL fInvadeProcess);
-		typedef BOOL (__stdcall *StackWalk64_t) (DWORD MachineType, HANDLE hProcess, HANDLE hThread, LPSTACKFRAME64 StackFrame, PVOID ContextRecord, PREAD_PROCESS_MEMORY_ROUTINE64 ReadMemoryRoutine, PFUNCTION_TABLE_ACCESS_ROUTINE64 FunctionTableAccessRoutine, PGET_MODULE_BASE_ROUTINE64 GetModuleBaseRoutine, PTRANSLATE_ADDRESS_ROUTINE64 TranslateAddress);
-		typedef BOOL (__stdcall * SymFromAddr_t) (HANDLE hProcess, DWORD64 Address, PDWORD64 Displacement, PSYMBOL_INFO Symbol);
-
-		SymGetOptions_t DbgHelpSymGetOptions = (SymGetOptions_t) GetProcAddress (dbgDll, "SymGetOptions");
-		SymSetOptions_t DbgHelpSymSetOptions = (SymSetOptions_t) GetProcAddress (dbgDll, "SymSetOptions");
-		SymInitialize_t DbgHelpSymInitialize = (SymInitialize_t) GetProcAddress (dbgDll, "SymInitialize");
-		PFUNCTION_TABLE_ACCESS_ROUTINE64 DbgHelpSymFunctionTableAccess64 = (PFUNCTION_TABLE_ACCESS_ROUTINE64) GetProcAddress (dbgDll, "SymFunctionTableAccess64");
-		PGET_MODULE_BASE_ROUTINE64 DbgHelpSymGetModuleBase64 = (PGET_MODULE_BASE_ROUTINE64) GetProcAddress (dbgDll, "SymGetModuleBase64");
-		StackWalk64_t DbgHelpStackWalk64 = (StackWalk64_t) GetProcAddress (dbgDll, "StackWalk64");
-		SymFromAddr_t DbgHelpSymFromAddr = (SymFromAddr_t) GetProcAddress (dbgDll, "SymFromAddr");
-
-		if (DbgHelpSymGetOptions && DbgHelpSymSetOptions && DbgHelpSymInitialize && DbgHelpSymFunctionTableAccess64 && DbgHelpSymGetModuleBase64 && DbgHelpStackWalk64 && DbgHelpSymFromAddr)
-		{
-			DbgHelpSymSetOptions (DbgHelpSymGetOptions() | SYMOPT_DEFERRED_LOADS | SYMOPT_ALLOW_ABSOLUTE_SYMBOLS | SYMOPT_NO_CPP);
-
-			if (DbgHelpSymInitialize (GetCurrentProcess(), NULL, TRUE))
-			{
-				STACKFRAME64 frame;
-				memset (&frame, 0, sizeof (frame));
-
-				frame.AddrPC.Offset = ep->ContextRecord->Eip;
-				frame.AddrPC.Mode = AddrModeFlat;
-				frame.AddrStack.Offset = ep->ContextRecord->Esp;
-				frame.AddrStack.Mode = AddrModeFlat;
-				frame.AddrFrame.Offset = ep->ContextRecord->Ebp;
-				frame.AddrFrame.Mode = AddrModeFlat;
-
-				string lastSymbol;
-
-				while (frameNumber < 32 && DbgHelpStackWalk64 (IMAGE_FILE_MACHINE_I386, GetCurrentProcess(), args->ExceptionThread, &frame, ep->ContextRecord, NULL, DbgHelpSymFunctionTableAccess64, DbgHelpSymGetModuleBase64, NULL))
-				{
-					if (!frame.AddrPC.Offset)
-						continue;
-
-					ULONG64 symbolBuffer[(sizeof (SYMBOL_INFO) + MAX_SYM_NAME * sizeof (TCHAR) + sizeof (ULONG64) - 1) / sizeof (ULONG64)];
-					memset (symbolBuffer, 0, sizeof (symbolBuffer));
-
-					PSYMBOL_INFO symbol = (PSYMBOL_INFO) symbolBuffer;
-					symbol->SizeOfStruct = sizeof (SYMBOL_INFO);
-					symbol->MaxNameLen = MAX_SYM_NAME;
-
-					if (DbgHelpSymFromAddr (GetCurrentProcess(), frame.AddrPC.Offset, NULL, symbol) && symbol->NameLen > 0)
-					{
-						for (size_t i = 0; i < symbol->NameLen; ++i)
-						{
-							if (!isalnum (symbol->Name[i]))
-								symbol->Name[i] = '_';
-						}
-
-						if (symbol->Name != lastSymbol)
-							callStack << "&st" << frameNumber++ << "=" << symbol->Name;
-
-						lastSymbol = symbol->Name;
-					}
-					else if (frameNumber == 0 || IsReturnAddress (frame.AddrPC.Offset))
-					{
-						callStack << "&st" << frameNumber++ << "=0x" << hex << frame.AddrPC.Offset << dec;
-					}
-				}
-			}
-		}
-	}
-
-	// StackWalk64() may fail due to missing frame pointers
-	list <DWORD> retAddrs;
-	if (frameNumber == 0)
-		retAddrs.push_back (ep->ContextRecord->Eip);
-
-	retAddrs.push_back (0);
-
-	MEMORY_BASIC_INFORMATION mi;
-	VirtualQuery (sp, &mi, sizeof (mi));
-	PDWORD stackTop = (PDWORD)((byte *) mi.BaseAddress + mi.RegionSize);
-	int i = 0;
-
-	while (retAddrs.size() < 16 && &sp[i] < stackTop)
-	{
-		if (IsReturnAddress (sp[i]))
-		{
-			bool duplicate = false;
-			foreach (DWORD prevAddr, retAddrs)
-			{
-				if (sp[i] == prevAddr)
-				{
-					duplicate = true;
-					break;
-				}
-			}
-
-			if (!duplicate)
-				retAddrs.push_back (sp[i]);
-		}
-		i++;
-	}
-
-	if (retAddrs.size() > 1)
-	{
-		foreach (DWORD addr, retAddrs)
-		{
-			callStack << "&st" << frameNumber++ << "=0x" << hex << addr << dec;
-		}
-	}
-
-	// Checksum of the module
-	if (GetModuleFileName (NULL, modPath, sizeof (modPath)))
-	{
-		HANDLE h = CreateFile (modPath, FILE_READ_DATA | FILE_READ_ATTRIBUTES, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
-		if (h != INVALID_HANDLE_VALUE)
-		{
-			BY_HANDLE_FILE_INFORMATION fi;
-			if (GetFileInformationByHandle (h, &fi))
-			{
-				char *buf = (char *) malloc (fi.nFileSizeLow);
-				if (buf)
-				{
-					DWORD bytesRead;
-					if (ReadFile (h, buf, fi.nFileSizeLow, &bytesRead, NULL) && bytesRead == fi.nFileSizeLow)
-						crc = GetCrc32 ((unsigned char *) buf, fi.nFileSizeLow);
-					free (buf);
-				}
-			}
-			CloseHandle (h);
-		}
-	}
-
-	GetSystemInfo (&si);
-
-	if (LocalizationActive)
-		sprintf_s (lpack, sizeof (lpack), "&langpack=%s_%s", GetPreferredLangId (), GetActiveLangPackVersion ());
-	else
-		lpack[0] = 0;
-
-	sprintf (url, TC_APPLINK_SECURE "&dest=err-report%s&os=%s&osver=%d.%d.%d&arch=%s&cpus=%d&app=%s&cksum=%x&dlg=%s&err=%x&addr=%x"
-		, lpack
-		, GetWindowsEdition().c_str()
-		, CurrentOSMajor
-		, CurrentOSMinor
-		, CurrentOSServicePack
-		, Is64BitOs () ? "x64" : "x86"
-		, si.dwNumberOfProcessors
-#ifdef TCMOUNT
-		,"main"
-#endif
-#ifdef VOLFORMAT
-		,"format"
-#endif
-#ifdef SETUP
-		,"setup"
-#endif
-		, crc
-		, LastDialogId ? LastDialogId : "-"
-		, exCode
-		, addr);
-
-	string urlStr = url + callStack.str();
-
-	_snwprintf (msg, array_capacity (msg), GetString ("EXCEPTION_REPORT"), urlStr.c_str());
-
-	if (IDYES == MessageBoxW (0, msg, GetString ("EXCEPTION_REPORT_TITLE"), MB_ICONERROR | MB_YESNO | MB_DEFBUTTON1))
-		ShellExecute (NULL, "open", urlStr.c_str(), NULL, NULL, SW_SHOWNORMAL);
-	else
-		UnhandledExceptionFilter (ep);
-}
-
-
-LONG __stdcall ExceptionHandler (EXCEPTION_POINTERS *ep)
-{
-	SetUnhandledExceptionFilter (NULL);
-
-	if (SystemFileSelectorCallPending && SystemFileSelectorCallerThreadId == GetCurrentThreadId())
-	{
-		MessageBoxW (NULL, GetString ("EXCEPTION_REPORT_EXT_FILESEL"), GetString ("EXCEPTION_REPORT_TITLE"), MB_ICONERROR | MB_OK | MB_SETFOREGROUND | MB_TOPMOST);
-
-		UnhandledExceptionFilter (ep);
-		return EXCEPTION_EXECUTE_HANDLER;
-	}
-
-	ExceptionHandlerThreadArgs args;
-	args.ExceptionPointers = ep;
-	args.ExceptionThread = GetCurrentThread();
-
-	WaitForSingleObject ((HANDLE) _beginthread (ExceptionHandlerThread, 0, &args), INFINITE);
-
-	return EXCEPTION_EXECUTE_HANDLER;
-}
-
-
-void InvalidParameterHandler (const wchar_t *expression, const wchar_t *function, const wchar_t *file, unsigned int line, uintptr_t reserved)
-{
-	TC_THROW_FATAL_EXCEPTION;
-}
-
-
 static LRESULT CALLBACK NonInstallUacWndProc (HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	return DefWindowProc (hWnd, message, wParam, lParam);
@@ -1964,7 +1708,7 @@ void CloseAppSetupMutex (void)
 }
 
 
-BOOL IsYourProductInstallerRunning (void)
+BOOL IsTrueCryptInstallerRunning (void)
 {
 	return (MutexExistsOnSystem (TC_MUTEX_NAME_APP_SETUP));
 }
@@ -2039,7 +1783,7 @@ uint32 ReadDriverConfigurationFlags ()
 {
 	DWORD configMap;
 
-	if (!ReadLocalMachineRegistryDword ("SYSTEM\\CurrentControlSet\\Services\\yourproduct", TC_DRIVER_CONFIG_REG_VALUE_NAME, &configMap))
+	if (!ReadLocalMachineRegistryDword ("SYSTEM\\CurrentControlSet\\Services\\truecrypt", TC_DRIVER_CONFIG_REG_VALUE_NAME, &configMap))
 		configMap = 0;
 
 	return configMap;
@@ -2050,7 +1794,7 @@ uint32 ReadEncryptionThreadPoolFreeCpuCountLimit ()
 {
 	DWORD count;
 
-	if (!ReadLocalMachineRegistryDword ("SYSTEM\\CurrentControlSet\\Services\\yourproduct", TC_ENCRYPTION_FREE_CPU_COUNT_REG_VALUE_NAME, &count))
+	if (!ReadLocalMachineRegistryDword ("SYSTEM\\CurrentControlSet\\Services\\truecrypt", TC_ENCRYPTION_FREE_CPU_COUNT_REG_VALUE_NAME, &count))
 		count = 0;
 
 	return count;
@@ -2105,7 +1849,7 @@ BOOL LoadSysEncSettings (HWND hwndDlg)
 }
 
 
-// Returns the number of partitions where non-system in-place encryption is progress or had been in progress
+// Returns the number of partitions where non-system in-place encryption is or had been in progress
 // but was interrupted. In addition, via the passed pointer, returns the last selected wipe algorithm ID.
 int LoadNonSysInPlaceEncSettings (WipeAlgorithmId *wipeAlgorithm)
 {
@@ -2150,73 +1894,6 @@ void RemoveNonSysInPlaceEncNotifications (void)
 
 	if (!IsNonInstallMode () && SystemEncryptionStatus == SYSENC_STATUS_NONE)
 		ManageStartupSeqWiz (TRUE, "");
-}
-
-
-void SavePostInstallTasksSettings (int command)
-{
-	FILE *f = NULL;
-
-	if (IsNonInstallMode() && command != TC_POST_INSTALL_CFG_REMOVE_ALL)
-		return;
-
-	switch (command)
-	{
-	case TC_POST_INSTALL_CFG_REMOVE_ALL:
-		remove (GetConfigPath (TC_APPD_FILENAME_POST_INSTALL_TASK_TUTORIAL));
-		remove (GetConfigPath (TC_APPD_FILENAME_POST_INSTALL_TASK_RELEASE_NOTES));
-		break;
-
-	case TC_POST_INSTALL_CFG_TUTORIAL:
-		f = fopen (GetConfigPath (TC_APPD_FILENAME_POST_INSTALL_TASK_TUTORIAL), "w");
-		break;
-
-	case TC_POST_INSTALL_CFG_RELEASE_NOTES:
-		f = fopen (GetConfigPath (TC_APPD_FILENAME_POST_INSTALL_TASK_RELEASE_NOTES), "w");
-		break;
-
-	default:
-		return;
-	}
-
-	if (f == NULL)
-		return;
-
-	if (fputs ("1", f) < 0)
-	{
-		// Error
-		fclose (f);
-		return;
-	}
-
-	TCFlushFile (f);
-
-	fclose (f);
-}
-
-
-void DoPostInstallTasks (void)
-{
-	BOOL bDone = FALSE;
-
-	if (FileExists (GetConfigPath (TC_APPD_FILENAME_POST_INSTALL_TASK_TUTORIAL)))
-	{
-		if (AskYesNo ("AFTER_INSTALL_TUTORIAL") == IDYES)
-			Applink ("beginnerstutorial", TRUE, "");
-
-		bDone = TRUE;
-	}
-
-	if (FileExists (GetConfigPath (TC_APPD_FILENAME_POST_INSTALL_TASK_RELEASE_NOTES)))
-	{
-		if (AskYesNo ("AFTER_UPGRADE_RELEASE_NOTES") == IDYES)
-			Applink ("releasenotes", TRUE, "");
-
-		bDone = TRUE;
-	}
-
-	if (bDone)
-		SavePostInstallTasksSettings (TC_POST_INSTALL_CFG_REMOVE_ALL);
 }
 
 
@@ -2329,12 +2006,12 @@ void InitApp (HINSTANCE hInstance, char *lpszCommandLine)
 		wcex.cbSize = sizeof(WNDCLASSEX); 
 		wcex.lpfnWndProc = (WNDPROC) NonInstallUacWndProc;
 		wcex.hInstance = hInstance;
-		wcex.lpszClassName = "YourProduct";
+		wcex.lpszClassName = "TrueCrypt";
 		RegisterClassEx (&wcex);
 
 		// A small transparent window is necessary to bring the new instance to foreground
 		hWnd = CreateWindowEx (WS_EX_TOOLWINDOW | WS_EX_LAYERED,
-			"YourProduct", "YourProduct", 0,
+			"TrueCrypt", "TrueCrypt", 0,
 			GetSystemMetrics (SM_CXSCREEN)/2,
 			GetSystemMetrics (SM_CYSCREEN)/2,
 			1, 1, NULL, NULL, hInstance, NULL);
@@ -2354,9 +2031,6 @@ void InitApp (HINSTANCE hInstance, char *lpszCommandLine)
 		exit (0);
 	}
 #endif
-
-	SetUnhandledExceptionFilter (ExceptionHandler);
-	_set_invalid_parameter_handler (InvalidParameterHandler);
 
 	RemoteSession = GetSystemMetrics (SM_REMOTESESSION) != 0;
 
@@ -2460,8 +2134,6 @@ void InitApp (HINSTANCE hInstance, char *lpszCommandLine)
 	DialogBoxParamW (hInst, MAKEINTRESOURCEW (IDD_AUXILIARY_DLG), NULL,
 		(DLGPROC) AuxiliaryDlgProc, (LPARAM) 1);
 
-	InitHelpFileName ();
-
 #ifndef SETUP
 	if (!EncryptionThreadPoolStart (ReadEncryptionThreadPoolFreeCpuCountLimit()))
 	{
@@ -2471,37 +2143,6 @@ void InitApp (HINSTANCE hInstance, char *lpszCommandLine)
 #endif
 }
 
-void InitHelpFileName (void)
-{
-	char *lpszTmp;
-
-	GetModuleFileName (NULL, szHelpFile, sizeof (szHelpFile));
-	lpszTmp = strrchr (szHelpFile, '\\');
-	if (lpszTmp)
-	{
-		char szTemp[TC_MAX_PATH];
-
-		// Primary file name
-		if (strcmp (GetPreferredLangId(), "en") == 0
-			|| GetPreferredLangId() == NULL)
-		{
-			strcpy (++lpszTmp, "YourProduct User Guide.pdf");
-		}
-		else
-		{
-			sprintf (szTemp, "YourProduct User Guide.%s.pdf", GetPreferredLangId());
-			strcpy (++lpszTmp, szTemp);
-		}
-
-		// Secondary file name (used when localized documentation is not found).
-		GetModuleFileName (NULL, szHelpFile2, sizeof (szHelpFile2));
-		lpszTmp = strrchr (szHelpFile2, '\\');
-		if (lpszTmp)
-		{
-			strcpy (++lpszTmp, "YourProduct User Guide.pdf");
-		}
-	}
-}
 
 BOOL OpenDevice (const char *lpszPath, OPEN_TEST_STRUCT *driver, BOOL detectFilesystem)
 {
@@ -2651,6 +2292,63 @@ int IsSystemDevicePath (char *path, HWND hwndDlg, BOOL bReliableRequired)
 }
 
 
+
+/* Determines whether the path points to a non-system partition on the system drive.
+IMPORTANT: As this may take a very long time if called for the first time, it should be called
+           only before performing a dangerous operation, never at WM_INITDIALOG or any other GUI events. 
+Return codes:
+0  - it isn't a non-system partition on the system drive 
+1  - it's a non-system partition on the system drive 
+-1 - the result can't be determined, isn't reliable, or there was an error. */
+int IsNonSysPartitionOnSysDrive (const char *path)
+{
+	char tmpPath [TC_MAX_PATH + 1];
+	int pos;
+
+	if (!GetSysDevicePaths (MainDlg))
+		return -1;
+
+	if (strlen (SysPartitionDevicePath) <= 1 || strlen (SysDriveDevicePath) <= 1)
+		return -1;
+
+	if (strncmp (path, SysPartitionDevicePath, max (strlen(path), strlen(SysPartitionDevicePath))) == 0
+		|| strncmp (path, SysDriveDevicePath, max (strlen(path), strlen(SysDriveDevicePath))) == 0)
+	{
+		// It is the system partition/drive path (it isn't a non-system partition)
+		return 0;
+	}
+
+	memset (tmpPath, 0, sizeof (tmpPath));
+	strncpy (tmpPath, path, sizeof (tmpPath) - 1);
+
+
+	pos = (int) FindString (tmpPath, "Partition", strlen (tmpPath), strlen ("Partition"), 0);
+
+	if (pos < 0)
+		return -1;
+
+	pos += strlen ("Partition");
+
+	if (pos + 1 > sizeof (tmpPath) - 1)
+		return -1;
+
+	tmpPath [pos] = '0';
+	tmpPath [pos + 1] = 0;
+
+	if (strncmp (tmpPath, SysDriveDevicePath, max (strlen(tmpPath), strlen(SysDriveDevicePath))) == 0)
+	{
+		// It is a non-system partition on the system drive 
+		return 1;
+	}
+	else 
+	{
+		// The partition is not on the system drive 
+		return 0;
+	}
+}
+
+
+
 wstring GetSysEncryptionPretestInfo2String (void)
 {
 	// This huge string is divided into smaller portions to make it easier for translators to
@@ -2778,7 +2476,7 @@ BOOL CALLBACK TextInfoDialogBoxDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, L
 				break;
 
 			case TC_TBXID_SYS_ENC_RESCUE_DISK:
-				PrintHardCopyTextUTF16 ((wchar_t *) GetRescueDiskHelpString ().c_str(), "YourProduct Rescue Disk Help", GetRescueDiskHelpString ().length () * 2);
+				PrintHardCopyTextUTF16 ((wchar_t *) GetRescueDiskHelpString ().c_str(), "TrueCrypt Rescue Disk Help", GetRescueDiskHelpString ().length () * 2);
 				break;
 
 			case TC_TBXID_DECOY_OS_INSTRUCTIONS:
@@ -3198,9 +2896,9 @@ BOOL DoDriverInstall (HWND hwndDlg)
 	StatusMessage (hwndDlg, "INSTALLING_DRIVER");
 #endif
 
-	hService = CreateService (hManager, "yourproduct", "yourproduct",
+	hService = CreateService (hManager, "truecrypt", "truecrypt",
 		SERVICE_ALL_ACCESS, SERVICE_KERNEL_DRIVER, SERVICE_SYSTEM_START, SERVICE_ERROR_NORMAL,
-		"System32\\drivers\\yourproduct.sys",
+		"System32\\drivers\\truecrypt.sys",
 		NULL, NULL, NULL, NULL, NULL);
 
 	if (hService == NULL)
@@ -3208,7 +2906,7 @@ BOOL DoDriverInstall (HWND hwndDlg)
 	else
 		CloseServiceHandle (hService);
 
-	hService = OpenService (hManager, "yourproduct", SERVICE_ALL_ACCESS);
+	hService = OpenService (hManager, "truecrypt", SERVICE_ALL_ACCESS);
 	if (hService == NULL)
 		goto error;
 
@@ -3252,7 +2950,7 @@ static int DriverLoad ()
 	char *tmp;
 	DWORD startType;
 
-	if (ReadLocalMachineRegistryDword ("SYSTEM\\CurrentControlSet\\Services\\yourproduct", "Start", &startType) && startType == SERVICE_BOOT_START)
+	if (ReadLocalMachineRegistryDword ("SYSTEM\\CurrentControlSet\\Services\\truecrypt", "Start", &startType) && startType == SERVICE_BOOT_START)
 		return ERR_PARAMETER_INCORRECT;
 
 	GetModuleFileName (NULL, driverPath, sizeof (driverPath));
@@ -3263,7 +2961,7 @@ static int DriverLoad ()
 		tmp = driverPath + 1;
 	}
 
-	strcpy (tmp, !Is64BitOs () ? "\\yourproduct.sys" : "\\yourproduct-x64.sys");
+	strcpy (tmp, !Is64BitOs () ? "\\truecrypt.sys" : "\\truecrypt-x64.sys");
 
 	file = FindFirstFile (driverPath, &find);
 
@@ -3287,7 +2985,7 @@ static int DriverLoad ()
 		return ERR_OS_ERROR;
 	}
 
-	hService = OpenService (hManager, "yourproduct", SERVICE_ALL_ACCESS);
+	hService = OpenService (hManager, "truecrypt", SERVICE_ALL_ACCESS);
 	if (hService != NULL)
 	{
 		// Remove stale service (driver is not loaded but service exists)
@@ -3296,7 +2994,7 @@ static int DriverLoad ()
 		Sleep (500);
 	}
 
-	hService = CreateService (hManager, "yourproduct", "yourproduct",
+	hService = CreateService (hManager, "truecrypt", "truecrypt",
 		SERVICE_ALL_ACCESS, SERVICE_KERNEL_DRIVER, SERVICE_DEMAND_START, SERVICE_ERROR_NORMAL,
 		driverPath, NULL, NULL, NULL, NULL, NULL);
 
@@ -3373,7 +3071,7 @@ BOOL DriverUnload ()
 	if (hManager == NULL)
 		goto error;
 
-	hService = OpenService (hManager, "yourproduct", SERVICE_ALL_ACCESS);
+	hService = OpenService (hManager, "truecrypt", SERVICE_ALL_ACCESS);
 	if (hService == NULL)
 		goto error;
 
@@ -3814,7 +3512,11 @@ std::wstring GetWrongPasswordErrorMessage (HWND hwndDlg)
 		wcscat (szTmp, GetString ("PASSWORD_WRONG_CAPSLOCK_ON"));
 
 #ifdef TCMOUNT
-	if (TCBootLoaderOnInactiveSysEncDrive ())
+
+	char szDevicePath [TC_MAX_PATH+1] = {0};
+	GetWindowText (GetDlgItem (MainDlg, IDC_VOLUME), szDevicePath, sizeof (szDevicePath));
+
+	if (TCBootLoaderOnInactiveSysEncDrive (szDevicePath))
 	{
 		swprintf (szTmp, GetString (KeyFilesEnable ? "PASSWORD_OR_KEYFILE_OR_MODE_WRONG" : "PASSWORD_OR_MODE_WRONG"));
 
@@ -3994,7 +3696,7 @@ void LocalizeDialog (HWND hwnd, char *stringId)
 	SendMessage (hwnd, WM_SETFONT, (WPARAM) hUserFont, 0);
 
 	if (stringId == NULL)
-		SetWindowText (hwnd, "YourProduct");
+		SetWindowText (hwnd, "TrueCrypt");
 	else
 		SetWindowTextW (hwnd, GetString (stringId));
 	
@@ -4615,8 +4317,6 @@ BOOL CALLBACK BenchmarkDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lP
 
 			SetDlgItemTextW (hwndDlg, IDC_HW_AES, (wstring (L" ") + (GetString (is_aes_hw_cpu_supported() ? ((driverConfig & TC_DRIVER_CONFIG_DISABLE_HARDWARE_ENCRYPTION) ? "UISTR_DISABLED" : "UISTR_YES") : "NOT_APPLICABLE_OR_NOT_AVAILABLE"))).c_str());
 
-			ToHyperlink (hwndDlg, IDC_HW_AES_LABEL_LINK);
-
 			if (is_aes_hw_cpu_supported() && (driverConfig & TC_DRIVER_CONFIG_DISABLE_HARDWARE_ENCRYPTION))
 			{
 				Warning ("DISABLED_HW_AES_AFFECTS_PERFORMANCE");
@@ -4642,8 +4342,6 @@ BOOL CALLBACK BenchmarkDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lP
 			}
 
 			SetDlgItemTextW (hwndDlg, IDC_PARALLELIZATION, (wstring (L" ") + nbrThreadsStr).c_str());
-
-			ToHyperlink (hwndDlg, IDC_PARALLELIZATION_LABEL_LINK);
 
 			if (nbrThreads < min (sysInfo.dwNumberOfProcessors, GetMaxEncryptionThreadCount())
 				&& sysInfo.dwNumberOfProcessors > 1)
@@ -4679,16 +4377,6 @@ BOOL CALLBACK BenchmarkDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lP
 			{
 				EndDialog (hwndDlg, IDCLOSE);
 			}
-			return 1;
-
-		case IDC_HW_AES_LABEL_LINK:
-
-			Applink ("hwacceleration", TRUE, "");
-			return 1;
-
-		case IDC_PARALLELIZATION_LABEL_LINK:
-
-			Applink ("parallelization", TRUE, "");
 			return 1;
 
 		case IDCLOSE:
@@ -5686,6 +5374,8 @@ BOOL CALLBACK MultiChoiceDialogProc (HWND hwndDlg, UINT uMsg, WPARAM wParam, LPA
 				wrec.bottom - wrec.top - vertSubOffset + 1 + vertMsgHeightOffset,
 				TRUE);
 
+			DisableCloseButton (hwndDlg);
+
 			return 1;
 		}
 
@@ -5708,7 +5398,8 @@ BOOL CALLBACK MultiChoiceDialogProc (HWND hwndDlg, UINT uMsg, WPARAM wParam, LPA
 		break;
 
 	case WM_CLOSE:
-		EndDialog (hwndDlg, 0);
+		// This prevents the window from being closed by pressing Alt-F4 (the Close button is hidden).
+		// Note that the OS handles modal MessageBox() dialog windows the same way.
 		return 1;
 	}
 
@@ -6352,6 +6043,7 @@ BOOL IsMountedVolume (const char *volname)
 }
 
 
+// Returns -1 if no drive letter is resolved
 int GetMountedVolumeDriveNo (char *volname)
 {
 	MOUNT_LIST_STRUCT mlist;
@@ -7005,7 +6697,7 @@ BOOL IsNonInstallMode ()
 			// We can't use GetConfigPath() here because it would call us back (indirect recursion)
 			if (SUCCEEDED(SHGetFolderPath (NULL, CSIDL_APPDATA, NULL, 0, path)))
 			{
-				strcat (path, "\\YourProduct\\");
+				strcat (path, "\\TrueCrypt\\");
 				strcat (path, TC_APPD_FILENAME_SYSTEM_ENCRYPTION);
 
 				if (FileExists (path))
@@ -7031,7 +6723,7 @@ BOOL IsNonInstallMode ()
 
 	// The following test may be unreliable in some cases (e.g. after the user selects restore "Last Known Good
 	// Configuration" from the Windows boot menu).
-	if (RegOpenKeyEx (HKEY_LOCAL_MACHINE, "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\YourProduct", 0, KEY_READ, &hkey) == ERROR_SUCCESS)
+	if (RegOpenKeyEx (HKEY_LOCAL_MACHINE, "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\TrueCrypt", 0, KEY_READ, &hkey) == ERROR_SUCCESS)
 	{
 		RegCloseKey (hkey);
 		return FALSE;
@@ -7066,7 +6758,7 @@ void SetListScrollHPos (HWND hList, int topMostVisibleItem)
 }
 
 
-// Adds or removes YourProduct.exe to/from the system startup sequence (with appropriate command line arguments)
+// Adds or removes TrueCrypt.exe to/from the system startup sequence (with appropriate command line arguments)
 void ManageStartupSeq (void)
 {
 	if (!IsNonInstallMode ())
@@ -7086,7 +6778,7 @@ void ManageStartupSeq (void)
 				char *tmp = NULL;
 
 				if (tmp = strrchr (exe, '\\'))
-					strcpy (++tmp, "YourProduct.exe");
+					strcpy (++tmp, "TrueCrypt.exe");
 			}
 #endif
 			strcat (exe, "\" /q preferences /a logon");
@@ -7094,15 +6786,15 @@ void ManageStartupSeq (void)
 			if (bMountDevicesOnLogon) strcat (exe, " /a devices");
 			if (bMountFavoritesOnLogon) strcat (exe, " /a favorites");
 
-			WriteRegistryString (regk, "YourProduct", exe);
+			WriteRegistryString (regk, "TrueCrypt", exe);
 		}
 		else
-			DeleteRegistryValue (regk, "YourProduct");
+			DeleteRegistryValue (regk, "TrueCrypt");
 	}
 }
 
 
-// Adds or removes the YourProduct Volume Creation Wizard to/from the system startup sequence
+// Adds or removes the TrueCrypt Volume Creation Wizard to/from the system startup sequence
 void ManageStartupSeqWiz (BOOL bRemove, const char *arg)
 {
 	char regk [64];
@@ -7119,7 +6811,7 @@ void ManageStartupSeqWiz (BOOL bRemove, const char *arg)
 				char *tmp = NULL;
 
 				if (tmp = strrchr (exe, '\\'))
-					strcpy (++tmp, "YourProduct Format.exe");
+					strcpy (++tmp, "TrueCrypt Format.exe");
 			}
 #endif
 
@@ -7129,14 +6821,14 @@ void ManageStartupSeqWiz (BOOL bRemove, const char *arg)
 			strcat (exe, arg);
 		}
 
-		WriteRegistryString (regk, "YourProduct Format", exe);
+		WriteRegistryString (regk, "TrueCrypt Format", exe);
 	}
 	else
-		DeleteRegistryValue (regk, "YourProduct Format");
+		DeleteRegistryValue (regk, "TrueCrypt Format");
 }
 
 
-// Delete the last used Windows file selector path for YourProduct from the registry
+// Delete the last used Windows file selector path for TrueCrypt from the registry
 void CleanLastVisitedMRU (void)
 {
 	WCHAR exeFilename[MAX_PATH];
@@ -7515,7 +7207,7 @@ char *GetConfigPath (char *fileName)
 
 	if (SUCCEEDED(SHGetFolderPath (NULL, CSIDL_APPDATA | CSIDL_FLAG_CREATE, NULL, 0, path)))
 	{
-		strcat (path, "\\YourProduct\\");
+		strcat (path, "\\TrueCrypt\\");
 		CreateDirectory (path, NULL);
 		strcat (path, fileName);
 	}
@@ -7532,7 +7224,7 @@ char *GetProgramConfigPath (char *fileName)
 
 	if (SUCCEEDED (SHGetFolderPath (NULL, CSIDL_COMMON_APPDATA | CSIDL_FLAG_CREATE, NULL, 0, path)))
 	{
-		strcat (path, "\\YourProduct\\");
+		strcat (path, "\\TrueCrypt\\");
 		CreateDirectory (path, NULL);
 		strcat (path, fileName);
 	}
@@ -7612,7 +7304,7 @@ void InfoBalloon (char *headingStringId, char *textStringId)
 		return;
 
 	TaskBarIconDisplayBalloonTooltip (MainDlg,
-		headingStringId == NULL ? L"YourProduct" : GetString (headingStringId), 
+		headingStringId == NULL ? L"TrueCrypt" : GetString (headingStringId), 
 		textStringId == NULL ? L" " : GetString (textStringId), 
 		FALSE);
 }
@@ -7625,7 +7317,7 @@ void InfoBalloonDirect (wchar_t *headingString, wchar_t *textString)
 		return;
 
 	TaskBarIconDisplayBalloonTooltip (MainDlg,
-		headingString == NULL ? L"YourProduct" : headingString, 
+		headingString == NULL ? L"TrueCrypt" : headingString, 
 		textString == NULL ? L" " : textString, 
 		FALSE);
 }
@@ -7638,7 +7330,7 @@ void WarningBalloon (char *headingStringId, char *textStringId)
 		return;
 
 	TaskBarIconDisplayBalloonTooltip (MainDlg,
-		headingStringId == NULL ? L"YourProduct" : GetString (headingStringId), 
+		headingStringId == NULL ? L"TrueCrypt" : GetString (headingStringId), 
 		textStringId == NULL ? L" " : GetString (textStringId), 
 		TRUE);
 }
@@ -7651,7 +7343,7 @@ void WarningBalloonDirect (wchar_t *headingString, wchar_t *textString)
 		return;
 
 	TaskBarIconDisplayBalloonTooltip (MainDlg,
-		headingString == NULL ? L"YourProduct" : headingString, 
+		headingString == NULL ? L"TrueCrypt" : headingString, 
 		textString == NULL ? L" " : textString, 
 		TRUE);
 }
@@ -7748,6 +7440,13 @@ int AskNoYes (char *stringId)
 }
 
 
+int AskNoYesString (const wchar_t *string)
+{
+	if (Silent) return IDNO;
+	return MessageBoxW (MainDlg, string, lpszTitle, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2);
+}
+
+
 int AskOkCancel (char *stringId)
 {
 	if (Silent) return IDCANCEL;
@@ -7837,8 +7536,7 @@ int AskErrNoYes (char *stringId)
 // Input format 2: {L"", L"Message text", L"Button caption 1", ... L"Last button caption", 0};
 // The second format is to be used if any of the strings contains format specification (e.g. %s, %d) or
 // in any other cases where a string needs to be resolved before calling this function.
-// If the returned value is 0, the user closed the dialog window without making a choice. 
-// If the user made a choice, the returned value is the ordinal number of the choice (1..MAX_MULTI_CHOICES)
+// The returned value is the ordinal number of the choice the user selected (1..MAX_MULTI_CHOICES)
 int AskMultiChoice (void *strings[], BOOL bBold)
 {
 	MULTI_CHOICE_DLGPROC_PARAMS params;
@@ -7984,36 +7682,6 @@ char *ConfigReadString (char *configKey, char *defaultValue, char *str, int maxL
 }
 
 
-void OpenPageHelp (HWND hwndDlg, int nPage)
-{
-	int r = (int)ShellExecute (NULL, "open", szHelpFile, NULL, NULL, SW_SHOWNORMAL);
-
-	if (r == ERROR_FILE_NOT_FOUND)
-	{
-		// Try the secondary help file
-		r = (int)ShellExecute (NULL, "open", szHelpFile2, NULL, NULL, SW_SHOWNORMAL);
-
-		if (r == ERROR_FILE_NOT_FOUND)
-		{
-			OpenOnlineHelp ();
-			return;
-		}
-	}
-
-	if (r == SE_ERR_NOASSOC)
-	{
-		if (AskYesNo ("HELP_READER_ERROR") == IDYES)
-			OpenOnlineHelp ();
-	}
-}
-
-
-void OpenOnlineHelp ()
-{
-	Applink ("help", TRUE, "");
-}
-
-
 #ifndef SETUP
 
 void RestoreDefaultKeyFilesParam (void)
@@ -8085,7 +7753,7 @@ void DebugMsgBox (char *format, ...)
 	_vsnprintf (buf, sizeof (buf), format, val);
 	va_end(val);
 
-	MessageBox (MainDlg, buf, "YourProduct debug", 0);
+	MessageBox (MainDlg, buf, "TrueCrypt debug", 0);
 }
 
 
@@ -8321,20 +7989,6 @@ std::string GetWindowsEdition ()
 }
 
 
-void Applink (char *dest, BOOL bSendOS, char *extraOutput)
-{
-	char url [MAX_URL_LENGTH];
-
-	ArrowWaitCursor ();
-
-	sprintf_s (url, sizeof (url), TC_APPLINK "%s%s&dest=%s", bSendOS ? ("&os=" + GetWindowsEdition()).c_str() : "", extraOutput, dest);
-	ShellExecute (NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
-
-	Sleep (200);
-	NormalCursor ();
-}
-
-
 char *RelativePath2Absolute (char *szFileName)
 {
 	if (szFileName[0] != '\\'
@@ -8384,7 +8038,7 @@ BOOL CALLBACK CloseTCWindowsEnum (HWND hwnd, LPARAM lParam)
 	{
 		char name[1024] = { 0 };
 		GetWindowText (hwnd, name, sizeof (name) - 1);
-		if (hwnd != MainDlg && strstr (name, "YourProduct"))
+		if (hwnd != MainDlg && strstr (name, "TrueCrypt"))
 		{
 			PostMessage (hwnd, TC_APPMSG_CLOSE_BKG_TASK, 0, 0);
 
@@ -8409,7 +8063,7 @@ BOOL CALLBACK FindTCWindowEnum (HWND hwnd, LPARAM lParam)
 	{
 		char name[32] = { 0 };
 		GetWindowText (hwnd, name, sizeof (name) - 1);
-		if (hwnd != MainDlg && strcmp (name, "YourProduct") == 0)
+		if (hwnd != MainDlg && strcmp (name, "TrueCrypt") == 0)
 		{
 			if (lParam != 0)
 				*((HWND *)lParam) = hwnd;
@@ -8504,7 +8158,7 @@ int OpenVolume (OpenVolumeContext *context, const char *volumePath, Password *pa
 	{
 		// Try to gain "raw" access to the partition in case there is a live filesystem on it (otherwise, 
 		// the NTFS driver guards hidden sectors and prevents e.g. header backup restore after the user 
-		// accidentally quick-formats a dismounted partition-hosted YourProduct volume as NTFS, etc.)
+		// accidentally quick-formats a dismounted partition-hosted TrueCrypt volume as NTFS, etc.)
 
 		DeviceIoControl (context->HostFileHandle, FSCTL_ALLOW_EXTENDED_DASD_IO, NULL, 0, NULL, 0, &dwResult, NULL);
 	}
@@ -8610,7 +8264,7 @@ int OpenVolume (OpenVolumeContext *context, const char *volumePath, Password *pa
 			// If FSCTL_ALLOW_EXTENDED_DASD_IO failed and there is a live filesystem on the partition, then the
 			// filesystem driver may report EOF when we are reading hidden sectors (when the filesystem is 
 			// shorter than the partition). This can happen for example after the user quick-formats a dismounted
-			// partition-hosted YourProduct volume and then tries to read the embedded backup header.
+			// partition-hosted TrueCrypt volume and then tries to read the embedded backup header.
 
 			memset (buffer, 0, sizeof (buffer));
 		}
@@ -9540,10 +9194,13 @@ BOOL BufferContainsString (const byte *buffer, size_t bufferSize, const char *st
 
 #ifndef SETUP
 
-int AskNonSysInPlaceEncryptionResume ()
+int AskNonSysInPlaceEncryptionResume (BOOL *decrypt)
 {
 	if (AskWarnYesNo ("NONSYS_INPLACE_ENC_RESUME_PROMPT") == IDYES)
+	{
+		*decrypt = TRUE;
 		return IDYES;
+	}
 
 	char *multiChoiceStr[] = { 0, "ASK_NONSYS_INPLACE_ENC_NOTIFICATION_REMOVAL", "DO_NOT_PROMPT_ME", "KEEP_PROMPTING_ME", 0 };
 
@@ -9580,8 +9237,8 @@ BOOL RemoveDeviceWriteProtection (HWND hwndDlg, char *devicePath)
 	if (GetTempPath (sizeof (temp), temp) == 0)
 		return FALSE;
 
-	_snprintf (cmdBatch, sizeof (cmdBatch), "%s\\YourProduct_Write_Protection_Removal.cmd", temp);
-	_snprintf (diskpartScript, sizeof (diskpartScript), "%s\\YourProduct_Write_Protection_Removal.diskpart", temp);
+	_snprintf (cmdBatch, sizeof (cmdBatch), "%s\\TrueCrypt_Write_Protection_Removal.cmd", temp);
+	_snprintf (diskpartScript, sizeof (diskpartScript), "%s\\TrueCrypt_Write_Protection_Removal.diskpart", temp);
 
 	FILE *f = fopen (cmdBatch, "w");
 	if (!f)
@@ -9630,7 +9287,7 @@ void EnableElevatedCursorChange (HWND parent)
 	// Create a transparent window to work around a UAC issue preventing change of the cursor
 	if (UacElevated)
 	{
-		const char *className = "YourProductEnableElevatedCursorChange";
+		const char *className = "TrueCryptEnableElevatedCursorChange";
 		WNDCLASSEX winClass;
 		HWND hWnd;
 
@@ -9641,7 +9298,7 @@ void EnableElevatedCursorChange (HWND parent)
 		winClass.lpszClassName = className;
 		RegisterClassEx (&winClass);
 
-		hWnd = CreateWindowEx (WS_EX_TOOLWINDOW | WS_EX_LAYERED, className, "YourProduct UAC", 0, 0, 0, GetSystemMetrics (SM_CXSCREEN), GetSystemMetrics (SM_CYSCREEN), parent, NULL, hInst, NULL);
+		hWnd = CreateWindowEx (WS_EX_TOOLWINDOW | WS_EX_LAYERED, className, "TrueCrypt UAC", 0, 0, 0, GetSystemMetrics (SM_CXSCREEN), GetSystemMetrics (SM_CYSCREEN), parent, NULL, hInst, NULL);
 		SetLayeredWindowAttributes (hWnd, 0, 1, LWA_ALPHA);
 		ShowWindow (hWnd, SW_SHOWNORMAL);
 

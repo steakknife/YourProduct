@@ -4,9 +4,9 @@
  Copyright (c) 1998-2000 Paul Le Roux and which is governed by the 'License
  Agreement for Encryption for the Masses'. Modifications and additions to
  the original source code (contained in this file) and all other portions
- of this file are Copyright (c) 2003-2009 YourProduct Developers Association
- and are governed by the YourProduct License 3.0 the full text of which is
- contained in the file License.txt included in YourProduct binary and source
+ of this file are Copyright (c) 2003-2009 TrueCrypt Developers Association
+ and are governed by the TrueCrypt License 3.0 the full text of which is
+ contained in the file License.txt included in TrueCrypt binary and source
  code distribution packages. */
 
 #include "Common/Common.h"
@@ -42,6 +42,7 @@ void DisplaySizingErrorText ( HWND hwndTextBox );
 void EnableDisableFileNext ( HWND hComboBox , HWND hMainButton );
 BOOL QueryFreeSpace ( HWND hwndDlg , HWND hwndTextBox , BOOL display );
 static BOOL FinalPreTransformPrompts (void);
+void UpdateLastDialogId (void);
 void HandleOldAssignedDriveLetter (void);
 void AddCipher ( HWND hComboBox , char *lpszCipher , int nCipher );
 BOOL CALLBACK PageDialogProc ( HWND hwndDlg , UINT uMsg , WPARAM wParam , LPARAM lParam );
@@ -90,6 +91,7 @@ extern volatile BOOL bVolTransformThreadCancel;
 extern volatile BOOL bInPlaceEncNonSysResumed;
 extern volatile BOOL bFirstNonSysInPlaceEncResumeDone;
 extern volatile BOOL bInPlaceEncNonSys;
+extern volatile BOOL bInPlaceDecNonSys;
 extern __int64 NonSysInplaceEncBytesDone;
 extern __int64 NonSysInplaceEncTotalSize;
 extern int nPbar;

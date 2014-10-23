@@ -4,9 +4,9 @@
  Copyright (c) 1998-2000 Paul Le Roux and which is governed by the 'License
  Agreement for Encryption for the Masses'. Modifications and additions to
  the original source code (contained in this file) and all other portions
- of this file are Copyright (c) 2003-2010 YourProduct Developers Association
- and are governed by the YourProduct License 3.0 the full text of which is
- contained in the file License.txt included in YourProduct binary and source
+ of this file are Copyright (c) 2003-2010 TrueCrypt Developers Association
+ and are governed by the TrueCrypt License 3.0 the full text of which is
+ contained in the file License.txt included in TrueCrypt binary and source
  code distribution packages. */
 
 #ifndef TC_HEADER_Common_Volumes
@@ -27,10 +27,10 @@ extern "C" {
 // specifies the minimum program version required to decrypt the system partition/drive
 #define TC_SYSENC_KEYSCOPE_MIN_REQ_PROG_VERSION	0x0700
 
-// Current volume format version (created by YourProduct 6.0+)
+// Current volume format version (created by TrueCrypt 6.0+)
 #define TC_VOLUME_FORMAT_VERSION				2
 
-// Version number of volume format created by YourProduct 1.0-5.1a
+// Version number of volume format created by TrueCrypt 1.0-5.1a
 #define TC_VOLUME_FORMAT_VERSION_PRE_6_0		1
 
 // Volume header sizes
@@ -114,7 +114,7 @@ extern "C" {
 
 // Volume header flags
 #define TC_HEADER_FLAG_ENCRYPTED_SYSTEM			0x1
-#define TC_HEADER_FLAG_NONSYS_INPLACE_ENC		0x2		// The volume has been created using non-system in-place encryption
+#define TC_HEADER_FLAG_NONSYS_INPLACE_ENC		0x2		// The volume has been created (or is being encrypted/decrypted) using non-system in-place encryption
 
 
 #ifndef TC_HEADER_Volume_VolumeHeader

@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2005-2010 YourProduct Developers Association. All rights reserved.
+ Copyright (c) 2005-2010 TrueCrypt Developers Association. All rights reserved.
 
- Governed by the YourProduct License 3.0 the full text of which is contained in
- the file License.txt included in YourProduct binary and source code distribution
+ Governed by the TrueCrypt License 3.0 the full text of which is contained in
+ the file License.txt included in TrueCrypt binary and source code distribution
  packages.
 */
 
@@ -209,23 +209,23 @@ char *XmlQuoteText (const char *textSrc, char *textDst, int textDstMaxSize)
 
 int XmlWriteHeader (FILE *file)
 {
-	return fputs ("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<YourProduct>", file);
+	return fputs ("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<TrueCrypt>", file);
 }
 
 
 int XmlWriteHeaderW (FILE *file)
 {
-	return fputws (L"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<YourProduct>", file);
+	return fputws (L"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<TrueCrypt>", file);
 }
 
 
 int XmlWriteFooter (FILE *file)
 {
-	return fputs ("\n</YourProduct>", file);
+	return fputs ("\n</TrueCrypt>", file);
 }
 
 
 int XmlWriteFooterW (FILE *file)
 {
-	return fputws (L"\n</YourProduct>", file);
+	return fputws (L"\n</TrueCrypt>", file);
 }

@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2007-2010 YourProduct Developers Association. All rights reserved.
+ Copyright (c) 2007-2010 TrueCrypt Developers Association. All rights reserved.
 
- Governed by the YourProduct License 3.0 the full text of which is contained in
- the file License.txt included in YourProduct binary and source code distribution
+ Governed by the TrueCrypt License 3.0 the full text of which is contained in
+ the file License.txt included in TrueCrypt binary and source code distribution
  packages.
 */
 
@@ -14,13 +14,12 @@
 #ifdef __cplusplus
 
 #include "MainCom_h.h"
-IYourProductMainCom *GetElevatedInstance (HWND parent);
+ITrueCryptMainCom *GetElevatedInstance (HWND parent);
 
 extern "C" {
 #endif
 
 BOOL ComServerMain ();
-void UacAnalyzeKernelMiniDump (HWND hwndDlg);
 int UacBackupVolumeHeader (HWND hwndDlg, BOOL bRequireConfirmation, char *lpszVolume);
 int UacRestoreVolumeHeader (HWND hwndDlg, char *lpszVolume);
 int UacChangePwd (char *lpszVolume, Password *oldPassword, Password *newPassword, int pkcs5, HWND hwndDlg);

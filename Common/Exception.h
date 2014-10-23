@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008 YourProduct Developers Association. All rights reserved.
+ Copyright (c) 2008 TrueCrypt Developers Association. All rights reserved.
 
- Governed by the YourProduct License 3.0 the full text of which is contained in
- the file License.txt included in YourProduct binary and source code distribution
+ Governed by the TrueCrypt License 3.0 the full text of which is contained in
+ the file License.txt included in TrueCrypt binary and source code distribution
  packages.
 */
 
@@ -12,7 +12,7 @@
 #include "Platform/PlatformBase.h"
 #include "Dlgcode.h"
 
-namespace YourProduct
+namespace TrueCrypt
 {
 	struct Exception
 	{
@@ -56,7 +56,7 @@ namespace YourProduct
 		void Show (HWND parent) const
 		{
 			string msgBody = "Parameter incorrect.\n\n\n(If you report a bug in connection with this, please include the following technical information in the bug report:\n" + string (SrcPos) + ")";
-			MessageBox (parent, msgBody.c_str(), "YourProduct", MB_ICONERROR | MB_SETFOREGROUND);
+			MessageBox (parent, msgBody.c_str(), "TrueCrypt", MB_ICONERROR | MB_SETFOREGROUND);
 		}
 
 		const char *SrcPos;

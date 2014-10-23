@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2007-2010 YourProduct Developers Association. All rights reserved.
+ Copyright (c) 2007-2010 TrueCrypt Developers Association. All rights reserved.
 
- Governed by the YourProduct License 3.0 the full text of which is contained in
- the file License.txt included in YourProduct binary and source code distribution
+ Governed by the TrueCrypt License 3.0 the full text of which is contained in
+ the file License.txt included in TrueCrypt binary and source code distribution
  packages.
 */
 
@@ -11,20 +11,19 @@ import "..\Common\Password.h";
 
 [
 	uuid(1770F56C-7881-4591-A179-79B8001C7D42),
-	helpstring("YourProduct Main UAC Support Library"),
-	version(2.4)	// Update ComSetup.cpp when changing version number
+	helpstring("TrueCrypt Main UAC Support Library"),
+	version(2.5)	// Update ComSetup.cpp when changing version number
 ]
-library YourProductMainCom
+library TrueCryptMainCom
 {
 	[
 		uuid(252C9DE6-D4B9-4A59-8A10-9CA73217B3D0),
 		object,
 		oleautomation,
-		helpstring("YourProduct Main UAC Support Interface")
+		helpstring("TrueCrypt Main UAC Support Interface")
 	]
-	interface IYourProductMainCom : IUnknown
+	interface ITrueCryptMainCom : IUnknown
 	{
-		void AnalyzeKernelMiniDump (LONG_PTR hwndDlg);
 		int BackupVolumeHeader (LONG_PTR hwndDlg, BOOL bRequireConfirmation, BSTR lpszVolume);
 		DWORD CallDriver (DWORD ioctl, BSTR input, BSTR *output);
 		int ChangePassword (BSTR volumePath, Password *oldPassword, Password *newPassword, int pkcs5, LONG_PTR hWnd);
@@ -41,10 +40,10 @@ library YourProductMainCom
 
 	[
 		uuid(CECBC0EE-78D9-41E6-BCF1-BC222BB224BA),
-		helpstring("YourProduct Main UAC Support Coclass")
+		helpstring("TrueCrypt Main UAC Support Coclass")
 	]
-	coclass YourProductMainCom
+	coclass TrueCryptMainCom
 	{
-		[default] interface IYourProductMainCom;
+		[default] interface ITrueCryptMainCom;
 	}
 }

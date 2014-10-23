@@ -14,13 +14,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -43,7 +41,7 @@ IDR_MOUNT_TLB           TYPELIB                 "Mount.tlb"
 
 IDD_PREFERENCES_DLG DIALOGEX 0, 0, 336, 282
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "YourProduct - Preferences"
+CAPTION "TrueCrypt - Preferences"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "Mount volumes as read-only",IDC_PREF_MOUNT_READONLY,
@@ -53,9 +51,9 @@ BEGIN
     CONTROL         "Enabled",IDC_PREF_BKG_TASK_ENABLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,44,111,10
     CONTROL         "Exit when there are no mounted volumes",IDC_CLOSE_BKG_TASK_WHEN_NOVOL,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,140,44,188,10
-    CONTROL         "Start YourProduct Background Task",IDC_PREF_LOGON_START,
+    CONTROL         "Start TrueCrypt Background Task",IDC_PREF_LOGON_START,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,75,126,10
-    CONTROL         "Mount all device-hosted YourProduct volumes",IDC_PREF_LOGON_MOUNT_DEVICES,
+    CONTROL         "Mount all device-hosted TrueCrypt volumes",IDC_PREF_LOGON_MOUNT_DEVICES,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,140,75,188,10
     CONTROL         "User logs off",IDC_PREF_DISMOUNT_LOGOFF,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,81,104,114,11
     CONTROL         "Entering power saving mode",IDC_PREF_DISMOUNT_POWERSAVING,
@@ -84,7 +82,7 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,281,262,50,14
     GROUPBOX        "Windows",IDT_WINDOWS_RELATED_SETTING,4,160,328,52
     GROUPBOX        "Default Mount Options",IDT_DEFAULT_MOUNT_OPTIONS,4,3,328,26
-    GROUPBOX        "YourProduct Background Task",IDT_TASKBAR_ICON,4,33,328,26
+    GROUPBOX        "TrueCrypt Background Task",IDT_TASKBAR_ICON,4,33,328,26
     GROUPBOX        "Auto-Dismount",IDT_AUTO_DISMOUNT,4,94,328,62
     LTEXT           "minutes",IDT_MINUTES,289,129,39,10
     LTEXT           "Dismount all when:",IDT_AUTO_DISMOUNT_ON,9,110,71,17
@@ -94,7 +92,7 @@ END
 
 IDD_VOLUME_PROPERTIES DIALOGEX 60, 30, 284, 186
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "YourProduct Volume Properties"
+CAPTION "TrueCrypt Volume Properties"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,114,166,55,14
@@ -129,14 +127,12 @@ END
 
 IDD_MOUNT_DLG DIALOGEX 0, 0, 375, 271
 STYLE DS_SETFONT | DS_SETFOREGROUND | DS_3DLOOK | DS_FIXEDSYS | DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "YourProduct"
+CAPTION "TrueCrypt"
 MENU IDR_MENU
 CLASS "CustomDlg"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     CONTROL         "",IDC_DRIVELIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,8,5,360,135
-    PUSHBUTTON      "&Create Volume",IDC_CREATE_VOLUME,16,159,84,14
-    PUSHBUTTON      "&Volume Properties...",IDC_VOLUME_PROPERTIES,146,159,84,14
     PUSHBUTTON      "&Wipe Cache",IDC_WIPE_CACHE,276,159,84,14
     COMBOBOX        IDC_VOLUME,56,192,212,74,CBS_DROPDOWN | CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
     CONTROL         "&Never save history",IDC_NO_HISTORY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,56,207,122,10
@@ -147,7 +143,7 @@ BEGIN
     PUSHBUTTON      "&Auto-Mount Devices",IDC_MOUNTALL,100,243,84,18
     PUSHBUTTON      "Di&smount All",IDC_UNMOUNTALL,192,243,84,18,WS_GROUP
     PUSHBUTTON      "E&xit",IDC_EXIT,284,243,84,18,WS_GROUP
-    CONTROL         112,IDC_LOGO,"Static",SS_BITMAP | SS_NOTIFY | WS_BORDER,16,192,27,31
+    CONTROL         IDB_LOGO_96DPI,IDC_LOGO,"Static",SS_BITMAP | SS_NOTIFY | WS_BORDER,16,192,27,31
     GROUPBOX        "Volume",IDT_VOLUME,8,179,360,53
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,2,0,372,147
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,282,242,88,20
@@ -155,37 +151,39 @@ BEGIN
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,6,242,88,20
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,98,242,88,20
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,2,151,372,119
+    LTEXT           "WARNING: Using TrueCrypt is not secure",IDT_INSECURE_APP,83,161,141,10,SS_NOTIFY
 END
 
-IDD_PASSWORD_DLG DIALOGEX 0, 0, 280, 68
+IDD_PASSWORD_DLG DIALOGEX 0, 0, 281, 85
 STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION
-CAPTION "Enter YourProduct Volume Password"
+CAPTION "Enter TrueCrypt Volume Password"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    EDITTEXT        IDC_PASSWORD,48,8,153,14,ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT        IDC_PASSWORD,48,7,153,14,ES_PASSWORD | ES_AUTOHSCROLL
     CONTROL         "Cache passwords and keyfil&es in memory",IDC_CACHE,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,52,27,153,10
-    CONTROL         "&Display password",IDC_SHOW_PASSWORD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,52,40,83,10
-    CONTROL         "U&se keyfiles",IDC_KEYFILES_ENABLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,52,52,83,11
-    PUSHBUTTON      "&Keyfiles...",IDC_KEY_FILES,137,49,64,14
-    PUSHBUTTON      "Mount Opti&ons...",IDC_MOUNT_OPTIONS,208,49,64,14
-    DEFPUSHBUTTON   "OK",IDOK,208,8,64,14
-    PUSHBUTTON      "Cancel",IDCANCEL,208,25,64,14
-    RTEXT           "Password:",IDT_PASSWORD,0,10,46,19
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,52,43,153,10
+    CONTROL         "&Display password",IDC_SHOW_PASSWORD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,52,56,83,10
+    CONTROL         "U&se keyfiles",IDC_KEYFILES_ENABLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,52,68,83,11
+    PUSHBUTTON      "&Keyfiles...",IDC_KEY_FILES,137,65,64,14
+    PUSHBUTTON      "Mount Opti&ons...",IDC_MOUNT_OPTIONS,208,65,64,14
+    DEFPUSHBUTTON   "OK",IDOK,208,7,64,14
+    PUSHBUTTON      "Cancel",IDCANCEL,208,24,64,14
+    RTEXT           "Password:",IDT_PASSWORD,0,9,46,19
+    LTEXT           "WARNING: Using TrueCrypt is not secure",IDT_INSECURE_APP,51,27,146,10,SS_NOTIFY
 END
 
 IDD_TRAVELER_DLG DIALOGEX 0, 0, 300, 269
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "YourProduct Traveler Disk Setup"
+CAPTION "TrueCrypt Traveler Disk Setup"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     EDITTEXT        IDC_DIRECTORY,17,29,205,13,ES_AUTOHSCROLL
     PUSHBUTTON      "Browse...",IDC_BROWSE_DIRS,228,28,57,14
-    CONTROL         "Include YourProduct Volume Creation Wizard",IDC_COPY_WIZARD,
+    CONTROL         "Include TrueCrypt Volume Creation Wizard",IDC_COPY_WIZARD,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,48,258,10
     CONTROL         "Do nothing",IDC_AUTORUN_DISABLE,"Button",BS_AUTORADIOBUTTON,15,97,262,10
-    CONTROL         "&Start YourProduct",IDC_AUTORUN_START,"Button",BS_AUTORADIOBUTTON,15,108,262,11
-    CONTROL         "&Auto-mount YourProduct volume (specified below)",IDC_AUTORUN_MOUNT,
+    CONTROL         "&Start TrueCrypt",IDC_AUTORUN_START,"Button",BS_AUTORADIOBUTTON,15,108,262,11
+    CONTROL         "&Auto-mount TrueCrypt volume (specified below)",IDC_AUTORUN_MOUNT,
                     "Button",BS_AUTORADIOBUTTON,15,120,262,11
     EDITTEXT        IDC_VOLUME_NAME,21,157,194,13,ES_AUTOHSCROLL | WS_DISABLED
     PUSHBUTTON      "Browse...",IDC_BROWSE_FILES,221,156,57,14,WS_DISABLED
@@ -199,7 +197,7 @@ BEGIN
     PUSHBUTTON      "Close",IDCLOSE,236,249,57,14
     GROUPBOX        "File Settings",IDT_FILE_SETTINGS,6,7,287,59
     GROUPBOX        "AutoRun Configuration (autorun.inf)",IDT_AUTORUN,5,70,288,172
-    LTEXT           "YourProduct volume to mount (relative to traveler disk root):",IDT_TRAVELER_MOUNT,21,147,248,8,WS_DISABLED
+    LTEXT           "TrueCrypt volume to mount (relative to traveler disk root):",IDT_TRAVELER_MOUNT,21,147,248,8,WS_DISABLED
     RTEXT           "Mount volume as drive letter:",IDT_MOUNT_LETTER,18,177,99,8,WS_DISABLED
     LTEXT           "Create traveler disk files at (traveler disk root directory):",IDT_TRAVEL_ROOT,18,19,259,8
     GROUPBOX        "Mount Settings",IDT_MOUNT_SETTINGS,13,134,272,100,WS_DISABLED
@@ -208,7 +206,7 @@ END
 
 IDD_HOTKEYS_DLG DIALOGEX 0, 0, 381, 239
 STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "YourProduct - System-Wide Hot Keys"
+CAPTION "TrueCrypt - System-Wide Hot Keys"
 CLASS "CustomDlg"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
@@ -234,7 +232,7 @@ END
 
 IDD_TOKEN_PREFERENCES DIALOGEX 0, 0, 316, 199
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "YourProduct - Security Token Preferences"
+CAPTION "TrueCrypt - Security Token Preferences"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     EDITTEXT        IDC_PKCS11_MODULE,16,23,204,13,ES_AUTOHSCROLL
@@ -251,7 +249,7 @@ END
 
 IDD_SYSENC_SETTINGS DIALOGEX 0, 0, 370, 242
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "YourProduct - System Encryption Settings"
+CAPTION "TrueCrypt - System Encryption Settings"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "Do not &show any texts in the pre-boot authentication screen (except the below custom message)",IDC_DISABLE_BOOT_LOADER_OUTPUT,
@@ -271,17 +269,15 @@ END
 
 IDD_PERFORMANCE_SETTINGS DIALOGEX 0, 0, 370, 206
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "YourProduct - Performance Options"
+CAPTION "TrueCrypt - Performance Options"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "",IDC_HW_AES_SUPPORTED_BY_CPU,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,294,21,57,12,WS_EX_CLIENTEDGE
     CONTROL         "Accelerate AES encryption/decryption by using the AES instructions of the processor (if available)",IDC_ENABLE_HARDWARE_ENCRYPTION,
                     "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,18,41,340,17
-    LTEXT           "More information",IDC_MORE_INFO_ON_HW_ACCELERATION,18,61,165,10,SS_NOTIFY
     CONTROL         "Do not use the following number of processors for encryption/decryption:",IDC_LIMIT_ENC_THREAD_POOL,
                     "Button",BS_AUTOCHECKBOX | BS_TOP | WS_TABSTOP,18,103,283,11
     COMBOBOX        IDC_ENCRYPTION_FREE_CPU_COUNT,304,101,48,51,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "More information",IDC_MORE_INFO_ON_THREAD_BASED_PARALLELIZATION,18,159,165,10,SS_NOTIFY
     PUSHBUTTON      "&Benchmark",IDC_BENCHMARK,7,185,59,14
     DEFPUSHBUTTON   "OK",IDOK,257,185,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,313,185,50,14
@@ -293,7 +289,7 @@ END
 
 IDD_FAVORITE_VOLUMES DIALOGEX 0, 0, 380, 276
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "YourProduct - Favorite Volumes"
+CAPTION "TrueCrypt - Favorite Volumes"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "",IDC_FAVORITE_VOLUMES_LIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,7,7,366,92
@@ -313,7 +309,6 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,218,349,11
     CONTROL         "Do not mount selected volume when 'Mount Favorite Volumes' &hot key is pressed",IDC_FAVORITE_DISABLE_HOTKEY,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,232,349,11
-    LTEXT           "Help on favorite volumes",IDC_FAVORITES_HELP_LINK,17,259,237,10,SS_NOTIFY
     DEFPUSHBUTTON   "OK",IDOK,269,257,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,323,257,50,14
     GROUPBOX        "",IDC_FAV_VOL_OPTIONS_GROUP_BOX,7,121,366,130
@@ -328,7 +323,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_PREFERENCES_DLG, DIALOG
     BEGIN
@@ -362,7 +357,7 @@ BEGIN
 
     IDD_PASSWORD_DLG, DIALOG
     BEGIN
-        BOTTOMMARGIN, 63
+        BOTTOMMARGIN, 80
     END
 
     IDD_TRAVELER_DLG, DIALOG
@@ -421,8 +416,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 7,1,1,0
- PRODUCTVERSION 7,1,1,0
+ FILEVERSION 7,2,0,0
+ PRODUCTVERSION 7,2,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -437,13 +432,13 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "CompanyName", "YourProduct Foundation"
-            VALUE "FileDescription", "YourProduct"
-            VALUE "FileVersion", "7.1a"
-            VALUE "LegalTrademarks", "YourProduct"
-            VALUE "OriginalFilename", "YourProduct.exe"
-            VALUE "ProductName", "YourProduct"
-            VALUE "ProductVersion", "7.1a"
+            VALUE "CompanyName", "TrueCrypt Foundation"
+            VALUE "FileDescription", "TrueCrypt"
+            VALUE "FileVersion", "7.2"
+            VALUE "LegalTrademarks", "TrueCrypt"
+            VALUE "OriginalFilename", "TrueCrypt.exe"
+            VALUE "ProductName", "TrueCrypt"
+            VALUE "ProductVersion", "7.2"
         END
     END
     BLOCK "VarFileInfo"
@@ -497,15 +492,16 @@ IDB_SYS_DRIVEICON_MASK  BITMAP                  "System_drive_icon_mask_96dpi.bm
 // Menu
 //
 
-IDR_MENU MENU 
+IDR_MENU MENU
 BEGIN
     POPUP "&Volumes"
     BEGIN
         MENUITEM "Select File...",              IDM_SELECT_FILE
         MENUITEM "Select Device...",            IDM_SELECT_DEVICE
         MENUITEM SEPARATOR
+        MENUITEM "Permanently Decrypt...",      IDM_DECRYPT_NONSYS_VOL
+        MENUITEM "Resume Interrupted Decryption...", IDM_RESUME_INTERRUPTED_PROC
         MENUITEM "Create New Volume...",        IDM_CREATE_VOLUME
-        MENUITEM "Resume Interrupted Process",  IDM_RESUME_INTERRUPTED_PROC
         MENUITEM SEPARATOR
         MENUITEM "Mount Volume",                IDM_MOUNT_VOLUME
         MENUITEM "Mount Volume with Options",   IDM_MOUNT_VOLUME_OPTIONS
@@ -523,11 +519,9 @@ BEGIN
     END
     POPUP "S&ystem"
     BEGIN
-        MENUITEM "Encrypt System Partition/Drive...", IDM_ENCRYPT_SYSTEM_DEVICE
         MENUITEM "Permanently Decrypt System Partition/Drive", IDM_PERMANENTLY_DECRYPT_SYS
         MENUITEM "Resume Interrupted Process",  IDM_SYSENC_RESUME
-        MENUITEM SEPARATOR
-        MENUITEM "Create Hidden Operating System...", IDM_CREATE_HIDDEN_OS
+        MENUITEM "Encrypt System Partition/Drive...", IDM_ENCRYPT_SYSTEM_DEVICE
         MENUITEM SEPARATOR
         MENUITEM "Create Rescue Disk...",       IDM_CREATE_RESCUE_DISK
         MENUITEM "Verify Rescue Disk",          IDM_VERIFY_RESCUE_DISK
@@ -588,23 +582,9 @@ BEGIN
     END
     POPUP "Hel&p"
     BEGIN
-        MENUITEM "User's Guide",                IDM_HELP
-        MENUITEM "Online Help",                 IDM_ONLINE_HELP
-        MENUITEM "Beginner's Tutorial",         IDM_ONLINE_TUTORIAL
-        MENUITEM "Frequently Asked Questions",  IDM_FAQ
-        MENUITEM SEPARATOR
-        MENUITEM "YourProduct Website",           IDM_WEBSITE
-        MENUITEM "Downloads",                   IDM_TC_DOWNLOADS
-        MENUITEM "News",                        IDM_NEWS
-        MENUITEM "Version History",             IDM_VERSION_HISTORY
-        MENUITEM SEPARATOR
-        MENUITEM "Analyze a System Crash...",   IDM_ANALYZE_SYSTEM_CRASH
-        MENUITEM SEPARATOR
-        MENUITEM "Contact",                     IDM_CONTACT
         MENUITEM "Legal Notices",               IDM_LICENSE
         MENUITEM "About",                       IDM_ABOUT
     END
-    MENUITEM "&Homepage ",                  IDM_HOMEPAGE
 END
 
 
@@ -613,12 +593,12 @@ END
 // String Table
 //
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
-    IDS_UACSTRING           "YourProduct"
+    IDS_UACSTRING           "TrueCrypt"
 END
 
-#endif    // English (U.S.) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

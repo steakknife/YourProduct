@@ -4,26 +4,24 @@
  Copyright (c) 1998-2000 Paul Le Roux and which is governed by the 'License
  Agreement for Encryption for the Masses'. Modifications and additions to
  the original source code (contained in this file) and all other portions
- of this file are Copyright (c) 2003-2010 YourProduct Developers Association
- and are governed by the YourProduct License 3.0 the full text of which is
- contained in the file License.txt included in YourProduct binary and source
+ of this file are Copyright (c) 2003-2010 TrueCrypt Developers Association
+ and are governed by the TrueCrypt License 3.0 the full text of which is
+ contained in the file License.txt included in TrueCrypt binary and source
  code distribution packages. */
 
 #ifndef TCDEFS_H
 #define TCDEFS_H
 
-#define TC_APP_NAME						"YourProduct"
+#define TC_APP_NAME						"TrueCrypt"
 
 // Version displayed to user 
-#define VERSION_STRING					"7.1a"
+#define VERSION_STRING					"7.2"
 
 // Version number to compare against driver
-#define VERSION_NUM						0x071a
+#define VERSION_NUM						0x0720
 
 // Release date
-#define TC_STR_RELEASE_DATE				"February 7, 2012"
-#define TC_RELEASE_DATE_YEAR			2012
-#define TC_RELEASE_DATE_MONTH			2
+#define TC_STR_RELEASE_DATE				"5/2014"
 
 #define BYTES_PER_KB                    1024LL
 #define BYTES_PER_MB                    1048576LL
@@ -247,19 +245,15 @@ void EraseMemory (void *memory, int size);
 #define TC_MAX_PATH		260	/* Includes the null terminator */
 #endif
 
-#define TC_STR_RELEASED_BY "Released by YourProduct Foundation on " TC_STR_RELEASE_DATE
+#define TC_STR_RELEASED_BY "Released by TrueCrypt Foundation in " TC_STR_RELEASE_DATE
 
 #define MAX_URL_LENGTH	2084 /* Internet Explorer limit. Includes the terminating null character. */
-
-#define TC_HOMEPAGE "http://www.yourproduct.org/"
-#define TC_APPLINK "http://www.yourproduct.org/applink?version=" VERSION_STRING
-#define TC_APPLINK_SECURE "https://www.yourproduct.org/applink?version=" VERSION_STRING
 
 enum
 {
 	/* WARNING: ADD ANY NEW CODES AT THE END (DO NOT INSERT THEM BETWEEN EXISTING). DO *NOT* DELETE ANY 
 	EXISTING CODES! Changing these values or their meanings may cause incompatibility with other versions
-	(for example, if a new version of the YourProduct installer receives an error code from an installed 
+	(for example, if a new version of the TrueCrypt installer receives an error code from an installed 
 	driver whose version is lower, it will report and interpret the error incorrectly). */
 
 	ERR_SUCCESS								= 0,

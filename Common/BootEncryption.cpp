@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008-2010 YourProduct Developers Association. All rights reserved.
+ Copyright (c) 2008-2010 TrueCrypt Developers Association. All rights reserved.
 
- Governed by the YourProduct License 3.0 the full text of which is contained in
- the file License.txt included in YourProduct binary and source code distribution
+ Governed by the TrueCrypt License 3.0 the full text of which is contained in
+ the file License.txt included in TrueCrypt binary and source code distribution
  packages.
 */
 
@@ -32,7 +32,7 @@
 #include "Mount/MainCom.h"
 #endif
 
-namespace YourProduct
+namespace TrueCrypt
 {
 #if !defined (SETUP)
 
@@ -199,18 +199,18 @@ namespace YourProduct
 		}
 		
 #if defined (TCMOUNT)
-		static IYourProductMainCom *ElevatedComInstance;
+		static ITrueCryptMainCom *ElevatedComInstance;
 #elif defined (VOLFORMAT)
-		static IYourProductFormatCom *ElevatedComInstance;
+		static ITrueCryptFormatCom *ElevatedComInstance;
 #endif
 		static DWORD ElevatedComInstanceThreadId;
 		static int ReferenceCount;
 	};
 
 #if defined (TCMOUNT)
-	IYourProductMainCom *Elevator::ElevatedComInstance;
+	ITrueCryptMainCom *Elevator::ElevatedComInstance;
 #elif defined (VOLFORMAT)
-	IYourProductFormatCom *Elevator::ElevatedComInstance;
+	ITrueCryptFormatCom *Elevator::ElevatedComInstance;
 #endif
 	DWORD Elevator::ElevatedComInstanceThreadId;
 	int Elevator::ReferenceCount = 0;
@@ -521,7 +521,7 @@ namespace YourProduct
 	DWORD BootEncryption::GetDriverServiceStartType ()
 	{
 		DWORD startType;
-		throw_sys_if (!ReadLocalMachineRegistryDword ("SYSTEM\\CurrentControlSet\\Services\\yourproduct", "Start", &startType));
+		throw_sys_if (!ReadLocalMachineRegistryDword ("SYSTEM\\CurrentControlSet\\Services\\truecrypt", "Start", &startType));
 		return startType;
 	}
 
@@ -550,7 +550,7 @@ namespace YourProduct
 
 		finally_do_arg (SC_HANDLE, serviceManager, { CloseServiceHandle (finally_arg); });
 
-		SC_HANDLE service = OpenService (serviceManager, "yourproduct", SERVICE_CHANGE_CONFIG);
+		SC_HANDLE service = OpenService (serviceManager, "truecrypt", SERVICE_CHANGE_CONFIG);
 		throw_sys_if (!service);
 
 		finally_do_arg (SC_HANDLE, service, { CloseServiceHandle (finally_arg); });
@@ -564,7 +564,7 @@ namespace YourProduct
 			char filesystem[128];
 
 			string path (GetWindowsDirectory());
-			path += "\\drivers\\yourproduct.sys";
+			path += "\\drivers\\truecrypt.sys";
 
 			if (GetVolumePathName (path.c_str(), pathBuf, sizeof (pathBuf))
 				&& GetVolumeInformation (pathBuf, NULL, 0, NULL, NULL, NULL, filesystem, sizeof(filesystem))
@@ -585,7 +585,7 @@ namespace YourProduct
 			NULL, NULL, NULL, NULL, NULL));
 
 		// ChangeServiceConfig() rejects SERVICE_BOOT_START with ERROR_INVALID_PARAMETER
-		throw_sys_if (!WriteLocalMachineRegistryDword ("SYSTEM\\CurrentControlSet\\Services\\yourproduct", "Start", startType));
+		throw_sys_if (!WriteLocalMachineRegistryDword ("SYSTEM\\CurrentControlSet\\Services\\truecrypt", "Start", startType));
 	}
 
 
@@ -1396,7 +1396,7 @@ namespace YourProduct
 
 		// Primary volume descriptor
 		strcpy ((char *)image + 0x8000, "\001CD001\001");
-		strcpy ((char *)image + 0x7fff + 41, "YourProduct Rescue Disk           ");
+		strcpy ((char *)image + 0x7fff + 41, "TrueCrypt Rescue Disk           ");
 		*(uint32 *) (image + 0x7fff + 81) = RescueIsoImageSize / 2048;
 		*(uint32 *) (image + 0x7fff + 85) = BE32 (RescueIsoImageSize / 2048);
 		image[0x7fff + 121] = 1;
@@ -1458,7 +1458,7 @@ namespace YourProduct
 		image[0xc820 + 6] = 1;
 		image[0xc820 + 8] = TC_CD_BOOT_LOADER_SECTOR;
 
-		// YourProduct Boot Loader
+		// TrueCrypt Boot Loader
 		CreateBootLoaderInMemory (image + TC_CD_BOOTSECTOR_OFFSET, TC_BOOT_LOADER_AREA_SIZE, true);
 
 		// Volume header
@@ -1633,7 +1633,7 @@ namespace YourProduct
 		device.SeekAt (0);
 		device.Read (bootLoaderBuf, sizeof (bootLoaderBuf));
 
-		// Prevent YourProduct loader from being backed up
+		// Prevent TrueCrypt loader from being backed up
 		for (size_t i = 0; i < sizeof (bootLoaderBuf) - strlen (TC_APP_NAME); ++i)
 		{
 			if (memcmp (bootLoaderBuf + i, TC_APP_NAME, strlen (TC_APP_NAME)) == 0)
@@ -1682,7 +1682,7 @@ namespace YourProduct
 		{
 		case DriveFilter:
 		case VolumeFilter:
-			filter = "yourproduct";
+			filter = "truecrypt";
 			filterReg = "UpperFilters";
 			regKey = SetupDiOpenClassRegKey (deviceClassGuid, KEY_READ | KEY_WRITE);
 			throw_sys_if (regKey == INVALID_HANDLE_VALUE);
@@ -1693,7 +1693,7 @@ namespace YourProduct
 			if (!IsOSAtLeast (WIN_VISTA))
 				return;
 
-			filter = "yourproduct.sys";
+			filter = "truecrypt.sys";
 			filterReg = "DumpFilters";
 			SetLastError (RegOpenKeyEx (HKEY_LOCAL_MACHINE, "SYSTEM\\CurrentControlSet\\Control\\CrashControl", 0, KEY_READ | KEY_WRITE, &regKey));
 			throw_sys_if (GetLastError() != ERROR_SUCCESS);
@@ -1725,14 +1725,14 @@ namespace YourProduct
 		}
 		else
 		{
-			string infFileName = GetTempPath() + "\\yourproduct_driver_setup.inf";
+			string infFileName = GetTempPath() + "\\truecrypt_driver_setup.inf";
 
 			File infFile (infFileName, false, true);
 			finally_do_arg (string, infFileName, { DeleteFile (finally_arg.c_str()); });
 
-			string infTxt = "[yourproduct]\r\n"
-							+ string (registerFilter ? "Add" : "Del") + "Reg=yourproduct_reg\r\n\r\n"
-							"[yourproduct_reg]\r\n"
+			string infTxt = "[truecrypt]\r\n"
+							+ string (registerFilter ? "Add" : "Del") + "Reg=truecrypt_reg\r\n\r\n"
+							"[truecrypt_reg]\r\n"
 							"HKR,,\"" + filterReg + "\",0x0001" + string (registerFilter ? "0008" : "8002") + ",\"" + filter + "\"\r\n";
 
 			infFile.Write ((byte *) infTxt.c_str(), infTxt.size());
@@ -1742,7 +1742,7 @@ namespace YourProduct
 			throw_sys_if (hInf == INVALID_HANDLE_VALUE);
 			finally_do_arg (HINF, hInf, { SetupCloseInfFile (finally_arg); });
 
-			throw_sys_if (!SetupInstallFromInfSection (ParentWindow, hInf, "yourproduct", SPINST_REGISTRY, regKey, NULL, 0, NULL, NULL, NULL, NULL));
+			throw_sys_if (!SetupInstallFromInfSection (ParentWindow, hInf, "truecrypt", SPINST_REGISTRY, regKey, NULL, 0, NULL, NULL, NULL, NULL));
 		}
 	}
 
@@ -1819,7 +1819,7 @@ namespace YourProduct
 			throw_sys_if (!service);
 
 			SERVICE_DESCRIPTION description;
-			description.lpDescription = "Mounts YourProduct system favorite volumes.";
+			description.lpDescription = "Mounts TrueCrypt system favorite volumes.";
 			ChangeServiceConfig2 (service, SERVICE_CONFIG_DESCRIPTION, &description);
 
 			CloseServiceHandle (service);
@@ -1861,6 +1861,8 @@ namespace YourProduct
 
 	void BootEncryption::CheckRequirements ()
 	{
+		AbortProcess ("INSECURE_APP");
+
 		if (nCurrentOS == WIN_2000)
 			throw ErrorException ("SYS_ENCRYPTION_UNSUPPORTED_ON_CURRENT_OS");
  
@@ -2232,72 +2234,13 @@ namespace YourProduct
 
 	void BootEncryption::PrepareHiddenOSCreation (int ea, int mode, int pkcs5)
 	{
-		BootEncryptionStatus encStatus = GetStatus();
-		if (encStatus.DriveMounted)
-			throw ParameterIncorrect (SRC_POS);
-
-		CheckRequirements();
-		BackupSystemLoader();
-
-		SelectedEncryptionAlgorithmId = ea;
+		AbortProcess ("INSECURE_APP");
 	}
 
 
 	void BootEncryption::PrepareInstallation (bool systemPartitionOnly, Password &password, int ea, int mode, int pkcs5, const string &rescueIsoImagePath)
 	{
-		BootEncryptionStatus encStatus = GetStatus();
-		if (encStatus.DriveMounted)
-			throw ParameterIncorrect (SRC_POS);
-
-		CheckRequirements ();
-
-		SystemDriveConfiguration config = GetSystemDriveConfiguration();
-
-		// Some chipset drivers may prevent access to the last sector of the drive
-		if (!systemPartitionOnly)
-		{
-			DISK_GEOMETRY geometry = GetDriveGeometry (config.DriveNumber);
-			Buffer sector (geometry.BytesPerSector);
-
-			Device device (config.DevicePath);
-
-			try
-			{
-				device.SeekAt (config.DrivePartition.Info.PartitionLength.QuadPart - geometry.BytesPerSector);
-				device.Read (sector.Ptr(), sector.Size());
-			}
-			catch (SystemException &e)
-			{
-				if (e.ErrorCode != ERROR_CRC)
-				{
-					e.Show (ParentWindow);
-					Error ("WHOLE_DRIVE_ENCRYPTION_PREVENTED_BY_DRIVERS");
-					throw UserAbort (SRC_POS);
-				}
-			}
-		}
-
-		BackupSystemLoader ();
-
-		uint64 volumeSize;
-		uint64 encryptedAreaStart;
-
-		if (systemPartitionOnly)
-		{
-			volumeSize = config.SystemPartition.Info.PartitionLength.QuadPart;
-			encryptedAreaStart = config.SystemPartition.Info.StartingOffset.QuadPart;
-		}
-		else
-		{
-			volumeSize = config.DrivePartition.Info.PartitionLength.QuadPart - TC_BOOT_LOADER_AREA_SIZE;
-			encryptedAreaStart = config.DrivePartition.Info.StartingOffset.QuadPart + TC_BOOT_LOADER_AREA_SIZE;
-		}
-
-		SelectedEncryptionAlgorithmId = ea;
-		CreateVolumeHeader (volumeSize, encryptedAreaStart, &password, ea, mode, pkcs5);
-		
-		if (!rescueIsoImagePath.empty())
-			CreateRescueIsoImage (true, rescueIsoImagePath);
+		AbortProcess ("INSECURE_APP");
 	}
 
 	bool BootEncryption::IsPagingFileActive (BOOL checkNonWindowsPartitionsOnly)
@@ -2337,7 +2280,7 @@ namespace YourProduct
 		else
 			configMap &= ~flag;
 
-		WriteLocalMachineRegistryDwordValue ("SYSTEM\\CurrentControlSet\\Services\\yourproduct", TC_DRIVER_CONFIG_REG_VALUE_NAME, configMap);
+		WriteLocalMachineRegistryDwordValue ("SYSTEM\\CurrentControlSet\\Services\\truecrypt", TC_DRIVER_CONFIG_REG_VALUE_NAME, configMap);
 	}
 
 	void BootEncryption::StartDecryption (BOOL discardUnreadableEncryptedSectors)
@@ -2358,19 +2301,7 @@ namespace YourProduct
 
 	void BootEncryption::StartEncryption (WipeAlgorithmId wipeAlgorithm, bool zeroUnreadableSectors)
 	{
-		BootEncryptionStatus encStatus = GetStatus();
-
-		if (!encStatus.DeviceFilterActive || !encStatus.DriveMounted || encStatus.SetupInProgress)
-			throw ParameterIncorrect (SRC_POS);
-
-		BootEncryptionSetupRequest request;
-		ZeroMemory (&request, sizeof (request));
-		
-		request.SetupMode = SetupEncryption;
-		request.WipeAlgorithm = wipeAlgorithm;
-		request.ZeroUnreadableSectors = zeroUnreadableSectors;
-
-		CallDriver (TC_IOCTL_BOOT_ENCRYPTION_SETUP, &request, sizeof (request), NULL, 0);
+		AbortProcess ("INSECURE_APP");
 	}
 
 	void BootEncryption::CopyFileAdmin (const string &sourceFile, const string &destinationFile)
@@ -2403,7 +2334,7 @@ namespace YourProduct
 	{
 		DWORD configMap;
 
-		if (!ReadLocalMachineRegistryDword ("SYSTEM\\CurrentControlSet\\Services\\yourproduct", TC_DRIVER_CONFIG_REG_VALUE_NAME, &configMap))
+		if (!ReadLocalMachineRegistryDword ("SYSTEM\\CurrentControlSet\\Services\\truecrypt", TC_DRIVER_CONFIG_REG_VALUE_NAME, &configMap))
 			configMap = 0;
 
 		return configMap;

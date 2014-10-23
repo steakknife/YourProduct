@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2005-2009 YourProduct Developers Association. All rights reserved.
+ Copyright (c) 2005-2009 TrueCrypt Developers Association. All rights reserved.
 
- Governed by the YourProduct License 3.0 the full text of which is contained in
- the file License.txt included in YourProduct binary and source code distribution
+ Governed by the TrueCrypt License 3.0 the full text of which is contained in
+ the file License.txt included in TrueCrypt binary and source code distribution
  packages.
 */
 
@@ -23,7 +23,7 @@
 #include "Platform/Finally.h"
 #include "Platform/ForEach.h"
 
-using namespace YourProduct;
+using namespace TrueCrypt;
 
 #define stat _stat
 #define S_IFDIR _S_IFDIR
@@ -452,8 +452,6 @@ BOOL CALLBACK KeyFilesDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
 			SetCheckBox (hwndDlg, IDC_KEYFILES_ENABLE, param->EnableKeyFiles);
 
 			SetWindowTextW(GetDlgItem(hwndDlg, IDT_KEYFILES_NOTE), GetString ("KEYFILES_NOTE"));
-
-			ToHyperlink (hwndDlg, IDC_LINK_KEYFILES_INFO);
 		}
 		return 1;
 
@@ -542,11 +540,6 @@ BOOL CALLBACK KeyFilesDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
 				MAKEINTRESOURCEW (IDD_KEYFILE_GENERATOR), hwndDlg,
 				(DLGPROC) KeyfileGeneratorDlgProc, (LPARAM) 0);
 			return 1;
-		}
-
-		if (lw == IDC_LINK_KEYFILES_INFO)
-		{
-			Applink ("keyfiles", TRUE, "");
 		}
 
 		if (lw == IDOK)

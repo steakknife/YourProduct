@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2007-2010 YourProduct Developers Association. All rights reserved.
+ Copyright (c) 2007-2010 TrueCrypt Developers Association. All rights reserved.
 
- Governed by the YourProduct License 3.0 the full text of which is contained in
- the file License.txt included in YourProduct binary and source code distribution
+ Governed by the TrueCrypt License 3.0 the full text of which is contained in
+ the file License.txt included in TrueCrypt binary and source code distribution
  packages.
 */
 
@@ -18,20 +18,20 @@
 #include "Mount.h"
 #include "Password.h"
 
-using namespace YourProduct;
+using namespace TrueCrypt;
 
 static volatile LONG ObjectCount = 0;
 
-class YourProductMainCom : public IYourProductMainCom
+class TrueCryptMainCom : public ITrueCryptMainCom
 {
 
 public:
-	YourProductMainCom (DWORD messageThreadId) : RefCount (0), MessageThreadId (messageThreadId)
+	TrueCryptMainCom (DWORD messageThreadId) : RefCount (0), MessageThreadId (messageThreadId)
 	{
 		InterlockedIncrement (&ObjectCount);
 	}
 
-	~YourProductMainCom ()
+	~TrueCryptMainCom ()
 	{
 		if (InterlockedDecrement (&ObjectCount) == 0)
 			PostThreadMessage (MessageThreadId, WM_APP, 0, 0);
@@ -55,7 +55,7 @@ public:
 
 	virtual HRESULT STDMETHODCALLTYPE QueryInterface (REFIID riid, void **ppvObject)
 	{
-		if (riid == IID_IUnknown || riid == IID_IYourProductMainCom)
+		if (riid == IID_IUnknown || riid == IID_ITrueCryptMainCom)
 			*ppvObject = this;
 		else
 		{
@@ -65,12 +65,6 @@ public:
 
 		AddRef ();
 		return S_OK;
-	}
-
-	virtual void STDMETHODCALLTYPE AnalyzeKernelMiniDump (LONG_PTR hwndDlg)
-	{
-		MainDlg = (HWND) hwndDlg;
-		::AnalyzeKernelMiniDump ((HWND) hwndDlg);
 	}
 
 	virtual int STDMETHODCALLTYPE BackupVolumeHeader (LONG_PTR hwndDlg, BOOL bRequireConfirmation, BSTR lpszVolume)
@@ -149,13 +143,13 @@ extern "C" BOOL ComServerMain ()
 {
 	SetProcessShutdownParameters (0x100, 0);
 
-	YourProductFactory<YourProductMainCom> factory (GetCurrentThreadId ());
+	TrueCryptFactory<TrueCryptMainCom> factory (GetCurrentThreadId ());
 	DWORD cookie;
 
 	if (IsUacSupported ())
 		UacElevated = TRUE;
 
-	if (CoRegisterClassObject (CLSID_YourProductMainCom, (LPUNKNOWN) &factory,
+	if (CoRegisterClassObject (CLSID_TrueCryptMainCom, (LPUNKNOWN) &factory,
 		CLSCTX_LOCAL_SERVER, REGCLS_SINGLEUSE, &cookie) != S_OK)
 		return FALSE;
 
@@ -179,15 +173,15 @@ extern "C" BOOL ComServerMain ()
 }
 
 
-static BOOL ComGetInstance (HWND hWnd, IYourProductMainCom **tcServer)
+static BOOL ComGetInstance (HWND hWnd, ITrueCryptMainCom **tcServer)
 {
-	return ComGetInstanceBase (hWnd, CLSID_YourProductMainCom, IID_IYourProductMainCom, (void **) tcServer);
+	return ComGetInstanceBase (hWnd, CLSID_TrueCryptMainCom, IID_ITrueCryptMainCom, (void **) tcServer);
 }
 
 
-IYourProductMainCom *GetElevatedInstance (HWND parent)
+ITrueCryptMainCom *GetElevatedInstance (HWND parent)
 {
-	IYourProductMainCom *instance;
+	ITrueCryptMainCom *instance;
 
 	if (!ComGetInstance (parent, &instance))
 		throw UserAbort (SRC_POS);
@@ -196,26 +190,9 @@ IYourProductMainCom *GetElevatedInstance (HWND parent)
 }
 
 
-extern "C" void UacAnalyzeKernelMiniDump (HWND hwndDlg)
-{
-	CComPtr<IYourProductMainCom> tc;
-
-	CoInitialize (NULL);
-
-	if (ComGetInstance (hwndDlg, &tc))
-	{
-		WaitCursor();
-		tc->AnalyzeKernelMiniDump ((LONG_PTR) hwndDlg);
-		NormalCursor();
-	}
-
-	CoUninitialize ();
-}
-
-
 extern "C" int UacBackupVolumeHeader (HWND hwndDlg, BOOL bRequireConfirmation, char *lpszVolume)
 {
-	CComPtr<IYourProductMainCom> tc;
+	CComPtr<ITrueCryptMainCom> tc;
 	int r;
 
 	CoInitialize (NULL);
@@ -233,7 +210,7 @@ extern "C" int UacBackupVolumeHeader (HWND hwndDlg, BOOL bRequireConfirmation, c
 
 extern "C" int UacRestoreVolumeHeader (HWND hwndDlg, char *lpszVolume)
 {
-	CComPtr<IYourProductMainCom> tc;
+	CComPtr<ITrueCryptMainCom> tc;
 	int r;
 
 	CoInitialize (NULL);
@@ -251,7 +228,7 @@ extern "C" int UacRestoreVolumeHeader (HWND hwndDlg, char *lpszVolume)
 
 extern "C" int UacChangePwd (char *lpszVolume, Password *oldPassword, Password *newPassword, int pkcs5, HWND hwndDlg)
 {
-	CComPtr<IYourProductMainCom> tc;
+	CComPtr<ITrueCryptMainCom> tc;
 	int r;
 
 	if (ComGetInstance (hwndDlg, &tc))

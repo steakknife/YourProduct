@@ -30,7 +30,7 @@
  stored in memory.
 */
 
-/* Adapted for YourProduct */
+/* Adapted for TrueCrypt */
 
 #include <string.h>     /* for memcpy() etc.        */
 #include <stdlib.h>     /* for _lrotl with VC++     */

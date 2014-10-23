@@ -3,7 +3,7 @@
 
 // blowfish.cpp - written and placed in the public domain by Wei Dai
 
-/* Adapted for YourProduct */
+/* Adapted for TrueCrypt */
 
 #include <memory.h>
 #include "Common/Tcdefs.h"

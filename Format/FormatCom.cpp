@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2007-2008 YourProduct Developers Association. All rights reserved.
+ Copyright (c) 2007-2008 TrueCrypt Developers Association. All rights reserved.
 
- Governed by the YourProduct License 3.0 the full text of which is contained in
- the file License.txt included in YourProduct binary and source code distribution
+ Governed by the TrueCrypt License 3.0 the full text of which is contained in
+ the file License.txt included in TrueCrypt binary and source code distribution
  packages.
 */
 
@@ -20,22 +20,22 @@
 #include "FormatCom_h.h"
 #include "FormatCom_i.c"
 
-using namespace YourProduct;
+using namespace TrueCrypt;
 
 static volatile LONG ObjectCount = 0;
 
-class YourProductFormatCom : public IYourProductFormatCom
+class TrueCryptFormatCom : public ITrueCryptFormatCom
 {
 
 public:
-	YourProductFormatCom (DWORD messageThreadId) : RefCount (0),
+	TrueCryptFormatCom (DWORD messageThreadId) : RefCount (0),
 		MessageThreadId (messageThreadId),
 		CallBack (NULL)
 	{
 		InterlockedIncrement (&ObjectCount);
 	}
 
-	~YourProductFormatCom ()
+	~TrueCryptFormatCom ()
 	{
 		if (InterlockedDecrement (&ObjectCount) == 0)
 			PostThreadMessage (MessageThreadId, WM_APP, 0, 0);
@@ -59,7 +59,7 @@ public:
 
 	virtual HRESULT STDMETHODCALLTYPE QueryInterface (REFIID riid, void **ppvObject)
 	{
-		if (riid == IID_IUnknown || riid == IID_IYourProductFormatCom)
+		if (riid == IID_IUnknown || riid == IID_ITrueCryptFormatCom)
 			*ppvObject = this;
 		else
 		{
@@ -131,7 +131,7 @@ public:
 protected:
 	DWORD MessageThreadId;
 	LONG RefCount;
-	IYourProductFormatCom *CallBack;
+	ITrueCryptFormatCom *CallBack;
 };
 
 
@@ -139,13 +139,13 @@ extern "C" BOOL ComServerFormat ()
 {
 	SetProcessShutdownParameters (0x100, 0);
 
-	YourProductFactory<YourProductFormatCom> factory (GetCurrentThreadId ());
+	TrueCryptFactory<TrueCryptFormatCom> factory (GetCurrentThreadId ());
 	DWORD cookie;
 
 	if (IsUacSupported ())
 		UacElevated = TRUE;
 
-	if (CoRegisterClassObject (CLSID_YourProductFormatCom, (LPUNKNOWN) &factory,
+	if (CoRegisterClassObject (CLSID_TrueCryptFormatCom, (LPUNKNOWN) &factory,
 		CLSCTX_LOCAL_SERVER, REGCLS_SINGLEUSE, &cookie) != S_OK)
 		return FALSE;
 
@@ -169,15 +169,15 @@ extern "C" BOOL ComServerFormat ()
 }
 
 
-static BOOL ComGetInstance (HWND hWnd, IYourProductFormatCom **tcServer)
+static BOOL ComGetInstance (HWND hWnd, ITrueCryptFormatCom **tcServer)
 {
-	return ComGetInstanceBase (hWnd, CLSID_YourProductFormatCom, IID_IYourProductFormatCom, (void **) tcServer);
+	return ComGetInstanceBase (hWnd, CLSID_TrueCryptFormatCom, IID_ITrueCryptFormatCom, (void **) tcServer);
 }
 
 
-IYourProductFormatCom *GetElevatedInstance (HWND parent)
+ITrueCryptFormatCom *GetElevatedInstance (HWND parent)
 {
-	IYourProductFormatCom *instance;
+	ITrueCryptFormatCom *instance;
 
 	if (!ComGetInstance (parent, &instance))
 		throw UserAbort (SRC_POS);
@@ -188,7 +188,7 @@ IYourProductFormatCom *GetElevatedInstance (HWND parent)
 
 extern "C" int UacFormatNtfs (HWND hWnd, int driveNo, int clusterSize)
 {
-	CComPtr<IYourProductFormatCom> tc;
+	CComPtr<ITrueCryptFormatCom> tc;
 	int r;
 
 	CoInitialize (NULL);
@@ -206,7 +206,7 @@ extern "C" int UacFormatNtfs (HWND hWnd, int driveNo, int clusterSize)
 
 extern "C" int UacAnalyzeHiddenVolumeHost (HWND hwndDlg, int *driveNo, __int64 hiddenVolHostSize, int *realClusterSize, __int64 *nbrFreeClusters)
 {
-	CComPtr<IYourProductFormatCom> tc;
+	CComPtr<ITrueCryptFormatCom> tc;
 	int r;
 
 	CoInitialize (NULL);

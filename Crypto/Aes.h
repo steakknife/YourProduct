@@ -28,7 +28,7 @@
  for optimisation details.
 */
 
-/* Adapted for YourProduct */
+/* Adapted for TrueCrypt */
 
 #ifndef _AES_H
 #define _AES_H

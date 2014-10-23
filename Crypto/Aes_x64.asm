@@ -30,7 +30,7 @@
 ; suggestions made by him for which I am most grateful.
 
 ;
-; Adapted for YourProduct:
+; Adapted for TrueCrypt:
 ; - Compatibility with NASM
 ;
 

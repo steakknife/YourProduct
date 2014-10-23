@@ -22,7 +22,7 @@
   Mark Adler    madler@alumni.caltech.edu
 */
 
-/* Adapted for YourProduct */
+/* Adapted for TrueCrypt */
 
 
 #define local static            /* for local function definitions */

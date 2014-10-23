@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2007-2010 YourProduct Developers Association. All rights reserved.
+ Copyright (c) 2007-2010 TrueCrypt Developers Association. All rights reserved.
 
- Governed by the YourProduct License 3.0 the full text of which is contained in
- the file License.txt included in YourProduct binary and source code distribution
+ Governed by the TrueCrypt License 3.0 the full text of which is contained in
+ the file License.txt included in TrueCrypt binary and source code distribution
  packages.
 */
 
@@ -12,14 +12,14 @@
 #include <guiddef.h>
 
 template <class TClass>
-class YourProductFactory : public IClassFactory
+class TrueCryptFactory : public IClassFactory
 {
 
 public:
-	YourProductFactory (DWORD messageThreadId) : 
+	TrueCryptFactory (DWORD messageThreadId) : 
 		RefCount (1), ServerLockCount (0), MessageThreadId (messageThreadId) { }
 
-	~YourProductFactory () { }
+	~TrueCryptFactory () { }
 	
 	virtual ULONG STDMETHODCALLTYPE AddRef ()
 	{
