@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008-2009 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008-2009 YourProduct Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the YourProduct License 3.0 the full text of which is contained in
+ the file License.txt included in YourProduct binary and source code distribution
  packages.
 */
 
@@ -19,7 +19,7 @@
 #include "Language.h"
 #include "Resource.h"
 
-#define OutputPackageFile "TrueCrypt Setup " VERSION_STRING ".exe"
+#define OutputPackageFile "YourProduct Setup " VERSION_STRING ".exe"
 
 #define MAG_START_MARKER	"TCINSTRT"
 #define MAG_END_MARKER_OBFUSCATED	"T/C/I/N/S/C/R/C"
@@ -57,19 +57,19 @@ static void DeobfuscateMagEndMarker (void)
 
 static void PkgError (char *msg)
 {
-	MessageBox (NULL, msg, "TrueCrypt", MB_ICONERROR | MB_SETFOREGROUND | MB_TOPMOST);
+	MessageBox (NULL, msg, "YourProduct", MB_ICONERROR | MB_SETFOREGROUND | MB_TOPMOST);
 }
 
 
 static void PkgWarning (char *msg)
 {
-	MessageBox (NULL, msg, "TrueCrypt", MB_ICONWARNING | MB_SETFOREGROUND | MB_TOPMOST);
+	MessageBox (NULL, msg, "YourProduct", MB_ICONWARNING | MB_SETFOREGROUND | MB_TOPMOST);
 }
 
 
 static void PkgInfo (char *msg)
 {
-	MessageBox (NULL, msg, "TrueCrypt", MB_ICONINFORMATION | MB_SETFOREGROUND | MB_TOPMOST);
+	MessageBox (NULL, msg, "YourProduct", MB_ICONINFORMATION | MB_SETFOREGROUND | MB_TOPMOST);
 }
 
 
@@ -165,7 +165,7 @@ static int CompressBuffer (char *out, char *in, int len)
 
 	if (!CreateProcess (NULL, "gzip --best", NULL, NULL, TRUE, 0, NULL, NULL, &startupInfo, &procInfo))
 	{
-		PkgError ("Error: Cannot run gzip.\n\nBefore you can create a self-extracting TrueCrypt package, you need to have the open-source 'gzip' compression tool placed in any directory in the search path for executable files (for example, in 'C:\\Windows\\').\n\nNote: gzip can be freely downloaded e.g. from www.gzip.org");
+		PkgError ("Error: Cannot run gzip.\n\nBefore you can create a self-extracting YourProduct package, you need to have the open-source 'gzip' compression tool placed in any directory in the search path for executable files (for example, in 'C:\\Windows\\').\n\nNote: gzip can be freely downloaded e.g. from www.gzip.org");
 		return 0;
 	}
 
@@ -236,12 +236,12 @@ BOOL MakeSelfExtractingPackage (HWND hwndDlg, char *szDestDir)
 	strcpy (outputFile, szDestDir);
 	strncat (outputFile, OutputPackageFile, sizeof (outputFile) - strlen (outputFile) - 1);
 
-	// Clone 'TrueCrypt Setup.exe' to create the base of the new self-extracting archive
+	// Clone 'YourProduct Setup.exe' to create the base of the new self-extracting archive
 
 	if (!TCCopyFile (inputFile, outputFile))
 	{
 		handleWin32Error (hwndDlg);
-		PkgError ("Cannot copy 'TrueCrypt Setup.exe' to the package");
+		PkgError ("Cannot copy 'YourProduct Setup.exe' to the package");
 		goto err;
 	}
 

@@ -4,9 +4,9 @@
  Copyright (c) 1998-2000 Paul Le Roux and which is governed by the 'License
  Agreement for Encryption for the Masses'. Modifications and additions to
  the original source code (contained in this file) and all other portions
- of this file are Copyright (c) 2003-2009 TrueCrypt Developers Association
- and are governed by the TrueCrypt License 3.0 the full text of which is
- contained in the file License.txt included in TrueCrypt binary and source
+ of this file are Copyright (c) 2003-2009 YourProduct Developers Association
+ and are governed by the YourProduct License 3.0 the full text of which is
+ contained in the file License.txt included in YourProduct binary and source
  code distribution packages. */
 
 #ifndef SETUP_H
@@ -20,25 +20,25 @@ extern "C" {
 static char *szFiles[]=
 {
 	"ALicense.txt",
-	"ATrueCrypt.exe",
-	"ATrueCrypt Format.exe",
-	"Atruecrypt.sys",
-	"Atruecrypt-x64.sys",
-	"Dtruecrypt.sys",
-	"ATrueCrypt Setup.exe"
+	"AYourProduct.exe",
+	"AYourProduct Format.exe",
+	"Ayourproduct.sys",
+	"Ayourproduct-x64.sys",
+	"Dyourproduct.sys",
+	"AYourProduct Setup.exe"
 };
 
 // Specifies what files are included in self-extracting packages (no other files will be packaged or extracted).
 static char *szCompressedFiles[]=
 {
 	"License.txt",
-	"TrueCrypt.exe",
-	"TrueCrypt Format.exe",
-	"truecrypt.sys",
-	"truecrypt-x64.sys"
+	"YourProduct.exe",
+	"YourProduct Format.exe",
+	"yourproduct.sys",
+	"yourproduct-x64.sys"
 };
 
-#define FILENAME_64BIT_DRIVER	"truecrypt-x64.sys"
+#define FILENAME_64BIT_DRIVER	"yourproduct-x64.sys"
 #define NBR_COMPRESSED_FILES (sizeof(szCompressedFiles) / sizeof(szCompressedFiles[0]))
 
 void localcleanup (void);

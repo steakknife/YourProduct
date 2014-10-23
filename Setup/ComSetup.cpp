@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2007-2010 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2007-2010 YourProduct Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the YourProduct License 3.0 the full text of which is contained in
+ the file License.txt included in YourProduct binary and source code distribution
  packages.
 */
 
@@ -29,11 +29,11 @@ extern "C" BOOL RegisterComServers (char *modulePath)
 	wchar_t mainModule[1024], formatModule[1024];
 	CComPtr<ITypeLib> tl, tl2;
 
-	wsprintfW (mainModule, L"%hsTrueCrypt.exe", modulePath);
-	wsprintfW (formatModule, L"%hsTrueCrypt Format.exe", modulePath);
+	wsprintfW (mainModule, L"%hsYourProduct.exe", modulePath);
+	wsprintfW (formatModule, L"%hsYourProduct Format.exe", modulePath);
 
-	UnRegisterTypeLib (LIBID_TrueCryptMainCom, TC_MAIN_COM_VERSION_MAJOR, TC_MAIN_COM_VERSION_MINOR, 0, SYS_WIN32);
-	UnRegisterTypeLib (LIBID_TrueCryptFormatCom, TC_FORMAT_COM_VERSION_MAJOR, TC_FORMAT_COM_VERSION_MINOR, 0, SYS_WIN32);
+	UnRegisterTypeLib (LIBID_YourProductMainCom, TC_MAIN_COM_VERSION_MAJOR, TC_MAIN_COM_VERSION_MINOR, 0, SYS_WIN32);
+	UnRegisterTypeLib (LIBID_YourProductFormatCom, TC_FORMAT_COM_VERSION_MAJOR, TC_FORMAT_COM_VERSION_MINOR, 0, SYS_WIN32);
 
 	wchar_t setupModule[MAX_PATH];
 	GetModuleFileNameW (NULL, setupModule, sizeof (setupModule) / sizeof (setupModule[0]));
@@ -63,19 +63,19 @@ extern "C" BOOL UnregisterComServers (char *modulePath)
 {
 	BOOL ret;
 
-	if (UnRegisterTypeLib (LIBID_TrueCryptMainCom, TC_MAIN_COM_VERSION_MAJOR, TC_MAIN_COM_VERSION_MINOR, 0, SYS_WIN32) != S_OK)
+	if (UnRegisterTypeLib (LIBID_YourProductMainCom, TC_MAIN_COM_VERSION_MAJOR, TC_MAIN_COM_VERSION_MINOR, 0, SYS_WIN32) != S_OK)
 		return FALSE;
-	if (UnRegisterTypeLib (LIBID_TrueCryptFormatCom, TC_FORMAT_COM_VERSION_MAJOR, TC_FORMAT_COM_VERSION_MINOR, 0, SYS_WIN32) != S_OK)
+	if (UnRegisterTypeLib (LIBID_YourProductFormatCom, TC_FORMAT_COM_VERSION_MAJOR, TC_FORMAT_COM_VERSION_MINOR, 0, SYS_WIN32) != S_OK)
 		return FALSE;
 
 	wchar_t module[1024];
 	CRegObject ro;
 	ro.FinalConstruct ();
 
-	wsprintfW (module, L"%hsTrueCrypt.exe", modulePath);
+	wsprintfW (module, L"%hsYourProduct.exe", modulePath);
 	ro.AddReplacement (L"MAIN_MODULE", module);
 
-	wsprintfW (module, L"%hsTrueCrypt Format.exe", modulePath);
+	wsprintfW (module, L"%hsYourProduct Format.exe", modulePath);
 	ro.AddReplacement (L"FORMAT_MODULE", module);
 
 	wchar_t setupModule[MAX_PATH];

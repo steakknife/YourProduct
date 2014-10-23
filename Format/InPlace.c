@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008-2010 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008-2010 YourProduct Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the YourProduct License 3.0 the full text of which is contained in
+ the file License.txt included in YourProduct binary and source code distribution
  packages.
 */
 
@@ -35,7 +35,7 @@ IMPORTANT: Due to this issue, functions in this file must not directly interact 
 #include "InPlace.h"
 
 using namespace std;
-using namespace TrueCrypt;
+using namespace YourProduct;
 
 #if TC_VOLUME_DATA_OFFSET != 131072
 #	error TC_VOLUME_DATA_OFFSET != 131072

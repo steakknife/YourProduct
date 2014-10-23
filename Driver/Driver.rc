@@ -41,12 +41,12 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "CompanyName", "TrueCrypt Foundation"
-            VALUE "FileDescription", "TrueCrypt Driver"
+            VALUE "CompanyName", "YourProduct Foundation"
+            VALUE "FileDescription", "YourProduct Driver"
             VALUE "FileVersion", "7.2"
-            VALUE "LegalTrademarks", "TrueCrypt"
-            VALUE "OriginalFilename", "truecrypt.sys"
-            VALUE "ProductName", "TrueCrypt"
+            VALUE "LegalTrademarks", "YourProduct"
+            VALUE "OriginalFilename", "yourproduct.sys"
+            VALUE "ProductName", "YourProduct"
             VALUE "ProductVersion", "7.2"
         END
     END

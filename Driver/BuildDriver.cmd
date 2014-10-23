@@ -1,8 +1,8 @@
 ::
-:: Copyright (c) 2008-2009 TrueCrypt Developers Association. All rights reserved.
+:: Copyright (c) 2008-2009 YourProduct Developers Association. All rights reserved.
 ::
-:: Governed by the TrueCrypt License 3.0 the full text of which is contained in
-:: the file License.txt included in TrueCrypt binary and source code distribution
+:: Governed by the YourProduct License 3.0 the full text of which is contained in
+:: the file License.txt included in YourProduct binary and source code distribution
 :: packages.
 ::
 
@@ -143,7 +143,7 @@ popd
 if "%TC_ARG_CMD%"=="-clean" exit /B 0
 
 md "%TC_COPY_DIR%\Setup Files" >NUL: 2>NUL:
-copy /B /Y obj%TC_BUILD_ALT_DIR%\%TC_BUILD_ARCH_DIR%\truecrypt.sys "%TC_COPY_DIR%\Setup Files\truecrypt%TC_ARCH_SUFFIX%.sys" >NUL:
+copy /B /Y obj%TC_BUILD_ALT_DIR%\%TC_BUILD_ARCH_DIR%\yourproduct.sys "%TC_COPY_DIR%\Setup Files\yourproduct%TC_ARCH_SUFFIX%.sys" >NUL:
 
 if errorlevel 1 (
 	echo BuildDriver.cmd: error: Cannot copy target. >&2
@@ -151,7 +151,7 @@ if errorlevel 1 (
 )
 
 if %TC_TEST_SIGN% equ 1 (
-	signtool sign /s "%TC_KERNEL_TEST_CERTIFICATE_STORE%" /n "%TC_KERNEL_TEST_CERTIFICATE_NAME%" "%TC_COPY_DIR%\Setup Files\truecrypt%TC_ARCH_SUFFIX%.sys" >NUL:
+	signtool sign /s "%TC_KERNEL_TEST_CERTIFICATE_STORE%" /n "%TC_KERNEL_TEST_CERTIFICATE_NAME%" "%TC_COPY_DIR%\Setup Files\yourproduct%TC_ARCH_SUFFIX%.sys" >NUL:
 
 	if errorlevel 1 (
 		echo BuildDriver.cmd: error: Cannot test-sign target. >&2

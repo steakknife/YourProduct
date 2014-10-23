@@ -4,9 +4,9 @@
  Copyright (c) 1998-2000 Paul Le Roux and which is governed by the 'License
  Agreement for Encryption for the Masses'. Modifications and additions to
  the original source code (contained in this file) and all other portions
- of this file are Copyright (c) 2003-2009 TrueCrypt Developers Association
- and are governed by the TrueCrypt License 3.0 the full text of which is
- contained in the file License.txt included in TrueCrypt binary and source
+ of this file are Copyright (c) 2003-2009 YourProduct Developers Association
+ and are governed by the YourProduct License 3.0 the full text of which is
+ contained in the file License.txt included in YourProduct binary and source
  code distribution packages. */
 
 #include "Tcdefs.h"
@@ -54,7 +54,7 @@ BOOL CALLBACK CommandHelpDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM 
 			}
 		}
 
-		strcat (tmp, "\nExamples:\n\nMount a volume as X:\ttruecrypt.exe /q /v volume.tc /l X\nDismount a volume X:\ttruecrypt.exe /q /d X");
+		strcat (tmp, "\nExamples:\n\nMount a volume as X:\tyourproduct.exe /q /v volume.tc /l X\nDismount a volume X:\tyourproduct.exe /q /d X");
 
 		SetWindowText (GetDlgItem (hwndDlg, IDC_COMMANDHELP_TEXT), (char*) tmp);
 		return 1;
